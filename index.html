@@ -2,514 +2,517 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Editor 3D Lavaderos Comunitarios - Mueve y acomoda los elementos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Lavaderos Comunitarios | 2 lavaderos lado izquierdo | Sin regaderas</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
+            background: #cbd5c0;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             margin: 0;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        #controls-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(30,30,40,0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 16px;
-            padding: 15px;
-            color: white;
-            z-index: 20;
-            width: 260px;
-            border: 1px solid rgba(255,215,120,0.5);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            pointer-events: auto;
-            font-size: 13px;
-        }
-        #controls-panel h3 {
-            margin: 0 0 8px 0;
-            font-size: 1rem;
-            text-align: center;
-            color: #ffcd7e;
-        }
-        .control-group {
-            margin-bottom: 12px;
-            border-top: 1px solid #555;
-            padding-top: 8px;
-        }
-        .control-group label {
-            display: block;
-            font-size: 0.75rem;
-            margin-bottom: 4px;
-            color: #ddd;
-        }
-        select, input {
-            width: 100%;
-            padding: 6px;
-            border-radius: 8px;
-            border: none;
-            background: #2c2c34;
-            color: white;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
-        }
-        .coord-group {
+            padding: 20px;
             display: flex;
-            gap: 8px;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        .coord-group input {
-            width: 33%;
+        .card {
+            max-width: 1250px;
+            width: 100%;
+            background: #fefaf0;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: #2c4c2f;
+            color: white;
+            padding: 1rem 2rem;
             text-align: center;
         }
-        button {
-            background: #f0a34b;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 5px;
-            color: #2d2d2d;
-            transition: 0.2s;
+        .header h1 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin: 0;
         }
-        button:hover {
-            background: #ffb86b;
+        .header p {
+            margin: 0.4rem 0 0;
+            opacity: 0.9;
+            font-size: 0.85rem;
+        }
+        .medidas-fijas {
+            background: #e9e3d3;
+            padding: 6px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-bottom: 1px solid #d6ceb2;
+        }
+        .botonera {
+            background: #f5efe0;
+            padding: 0.9rem 1.2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e0d5bc;
+        }
+        .btn {
+            background: #4b7a4a;
+            border: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            padding: 8px 18px;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn:hover {
+            background: #2b5e2a;
             transform: scale(1.02);
         }
-        .selected-info {
-            background: #00000066;
-            border-radius: 8px;
-            padding: 6px;
-            text-align: center;
+        .btn.active {
+            background: #da7a2c;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .canvas-container {
+            padding: 1.5rem;
+            background: #fffcf2;
+            display: flex;
+            justify-content: center;
+        }
+        canvas {
+            width: 100%;
+            height: auto;
+            background: #fefcf5;
+            border-radius: 1.5rem;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+            border: 1px solid #dcd0b0;
+        }
+        .info-legends {
+            background: #f8f3e4;
+            padding: 0.7rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.6rem;
             font-size: 0.7rem;
-            margin-bottom: 8px;
-            color: #ffd966;
         }
-        hr {
-            border-color: #555;
-            margin: 8px 0;
+        .legend {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
-        .note {
-            font-size: 0.65rem;
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 3px 10px;
+            border-radius: 28px;
+        }
+        .color-cuadro {
+            width: 20px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        .nota {
+            background: #e2d8c0;
+            padding: 4px 12px;
+            border-radius: 32px;
+            font-weight: 500;
+        }
+        footer {
+            font-size: 0.7rem;
             text-align: center;
-            margin-top: 8px;
-            color: #ccc;
-        }
-        @media (max-width: 700px) {
-            #controls-panel { width: 240px; padding: 10px; top: 10px; right: 10px; }
-            .coord-group input { font-size: 0.7rem; }
+            padding: 0.6rem;
+            background: #eae3cf;
         }
     </style>
 </head>
 <body>
-    <div id="controls-panel">
-        <h3>🛠️ EDITOR INTERACTIVO</h3>
-        <div class="selected-info" id="selectedName">Selecciona un elemento</div>
-        <div class="control-group">
-            <label>📌 Elemento</label>
-            <select id="elementSelect"></select>
-        </div>
-        <div class="control-group">
-            <label>📍 Posición (X, Y, Z) - metros</label>
-            <div class="coord-group">
-                <input type="number" id="posX" step="0.05" placeholder="X">
-                <input type="number" id="posY" step="0.05" placeholder="Y">
-                <input type="number" id="posZ" step="0.05" placeholder="Z">
-            </div>
-        </div>
-        <div class="control-group">
-            <label>🔄 Rotación (Y-axis, grados)</label>
-            <input type="number" id="rotY" step="5" placeholder="Grados">
-        </div>
-        <button id="applyBtn">📐 Aplicar cambios</button>
-        <hr>
-        <button id="resetPosBtn">⟳ Restablecer posiciones originales</button>
-        <div class="note">💡 Haz clic en cualquier elemento para seleccionarlo.<br>Arrastra con ratón para orbitar | Botón derecho para mover vista</div>
+<div class="card">
+    <div class="header">
+        <h1>🧺 LAVADEROS COMUNITARIOS · DISTRIBUCIÓN CON 2 LAVADEROS EN LADO IZQUIERDO</h1>
+        <p>▲ Terreno isósceles | Base 6.00 m | Lados 8.00 m | Altura 7.416 m | Entrada/Salida en vértice superior (1m)</p>
     </div>
+    <div class="medidas-fijas">
+        <span>🏠 Caseta: 2.00m × 1.50m</span>
+        <span>🧼 Lavadero estándar: 0.70m × 0.55m</span>
+        <span>🚪 Entrada/Salida: 1.00m (vértice superior)</span>
+        <span>🔄 Pasillo central despejado</span>
+    </div>
+    <div class="botonera">
+        <button id="btnLayout2x1" class="btn">🫧 2 lavaderos (1 izq + 1 der)</button>
+        <button id="btnLayout4x2" class="btn">🧼🧼 4 lavaderos (2 izq + 2 der)</button>
+        <button id="btnLeftOnly" class="btn active">⬅️ 2 LAVADEROS SÓLO EN LADO IZQUIERDO</button>
+    </div>
+    <div class="canvas-container">
+        <canvas id="planoCanvas" width="1100" height="800" style="max-width:1100px; width:100%; height:auto; aspect-ratio:1100/800"></canvas>
+    </div>
+    <div class="info-legends">
+        <div class="legend">
+            <div class="legend-item"><div class="color-cuadro" style="background:#bc9a6c;"></div> Caseta agua (2x1.5m)</div>
+            <div class="legend-item"><div class="color-cuadro" style="background:#5f8b4c;"></div> Lavadero 0.70x0.55m</div>
+            <div class="legend-item"><div class="color-cuadro" style="background:#f4c542;"></div> 🚪 Entrada/Salida 1m</div>
+            <div class="legend-item"><div class="color-cuadro" style="background:#f0ebd0;"></div> Pasillo central libre</div>
+        </div>
+        <div class="nota">✅ Distribución especial: solo dos lavaderos ubicados en el costado izquierdo, dejando el lado derecho completamente libre para circulación o usos futuros.</div>
+    </div>
+    <footer>🚶 Acceso por vértice superior. Sin regaderas — diseño enfocado únicamente en lavaderos comunitarios con espacio optimizado.</footer>
+</div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-            }
-        }
-    </script>
-
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-
-        // --- INICIALIZACIÓN ---
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0f1e2c);
-        scene.fog = new THREE.FogExp2(0x0f1e2c, 0.008);
-
-        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.set(7, 5, 9);
-        camera.lookAt(3, 1.5, 3.5);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        document.body.appendChild(renderer.domElement);
-
-        const labelRenderer = new CSS2DRenderer();
-        labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        labelRenderer.domElement.style.position = 'absolute';
-        labelRenderer.domElement.style.top = '0px';
-        labelRenderer.domElement.style.left = '0px';
-        labelRenderer.domElement.style.pointerEvents = 'none';
-        document.body.appendChild(labelRenderer.domElement);
-
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.rotateSpeed = 1.0;
-        controls.zoomSpeed = 1.2;
-        controls.panSpeed = 0.8;
-        controls.target.set(3, 1.5, 3.5);
-
-        // --- ILUMINACIÓN ---
-        const ambient = new THREE.AmbientLight(0x4a5a6a);
-        scene.add(ambient);
-        const mainLight = new THREE.DirectionalLight(0xfff5e0, 1.2);
-        mainLight.position.set(5, 10, 4);
-        mainLight.castShadow = true;
-        mainLight.receiveShadow = true;
-        mainLight.shadow.mapSize.width = 1024;
-        mainLight.shadow.mapSize.height = 1024;
-        mainLight.shadow.camera.near = 0.5;
-        mainLight.shadow.camera.far = 18;
-        scene.add(mainLight);
-        const fillLight = new THREE.PointLight(0xccaa77, 0.45);
-        fillLight.position.set(2, 2, 2);
-        scene.add(fillLight);
-        const backLight = new THREE.PointLight(0x6688aa, 0.3);
-        backLight.position.set(1, 3, -3);
-        scene.add(backLight);
+<script>
+    (function() {
+        // ---------- PARÁMETROS DEL TERRENO ----------
+        const BASE = 6.0;
+        const LADO = 8.0;
+        const ALTURA = Math.sqrt(LADO * LADO - (BASE/2)*(BASE/2)); // 7.416198
+        const VERTEX_X = BASE/2;   // 3.0
+        const VERTEX_Y = ALTURA;
         
-        // Helper suelo
-        const gridHelper = new THREE.GridHelper(14, 20, 0xaa9977, 0x776644);
-        gridHelper.position.y = -0.05;
-        gridHelper.material.transparent = true;
-        gridHelper.material.opacity = 0.35;
-        scene.add(gridHelper);
+        // Vértices triángulo
+        const A = { x: 0, y: 0 };
+        const B = { x: BASE, y: 0 };
+        const C = { x: VERTEX_X, y: VERTEX_Y };
         
-        // --- TERRENO FIJO (triángulo isósceles) ---
-        const shape = new THREE.Shape();
-        shape.moveTo(0, 0);
-        shape.lineTo(6, 0);
-        shape.lineTo(3, 7.416);
-        shape.closePath();
-        const extrudeSettings = { steps: 1, depth: 0.1, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05 };
-        const terrainGeom = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-        terrainGeom.rotateX(-Math.PI / 2);
-        terrainGeom.translate(0, -0.05, 0);
-        const terrainMat = new THREE.MeshStandardMaterial({ color: 0xd4c8a0, roughness: 0.7 });
-        const terrainMesh = new THREE.Mesh(terrainGeom, terrainMat);
-        terrainMesh.receiveShadow = true;
-        scene.add(terrainMesh);
+        // Caseta
+        const CASETA_ANCHO = 2.0;
+        const CASETA_PROF = 1.5;
+        const CASETA_X1 = (BASE - CASETA_ANCHO) / 2;   // 2.0
+        const CASETA_X2 = CASETA_X1 + CASETA_ANCHO;     // 4.0
+        const CASETA_Y_BASE = 0;
+        const CASETA_Y_TOP = CASETA_PROF;
         
-        // Borde triangular decorativo
-        const borderPoints = [
-            new THREE.Vector3(0, 0.02, 0), new THREE.Vector3(6, 0.02, 0),
-            new THREE.Vector3(3, 0.02, 7.416), new THREE.Vector3(0, 0.02, 0)
+        // Dimensiones lavaderos estándar
+        const LAV_W = 0.70;
+        const LAV_H = 0.55;
+        
+        // --- ENTRADA / SALIDA en la punta del triángulo (1m ancho) ---
+        const ENTRADA_ANCHO = 1.0;
+        const ENTRADA_X1 = VERTEX_X - ENTRADA_ANCHO/2;
+        const ENTRADA_X2 = VERTEX_X + ENTRADA_ANCHO/2;
+        const ENTRADA_Y = VERTEX_Y - 0.08;
+        
+        // ----- LAVADEROS: solo 2 unidades en el lado izquierdo -----
+        // Se colocan en la zona izquierda de la base, entre x=0.25 y x≈1.7
+        const lavaderosLeftOnly = [
+            { x: 0.35, y: 0.30, w: LAV_W, h: LAV_H },
+            { x: 1.15, y: 0.30, w: LAV_W, h: LAV_H }
         ];
-        const borderLine = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(borderPoints), new THREE.LineBasicMaterial({ color: 0xffaa66 }));
-        scene.add(borderLine);
         
-        // --- CLASE PARA ELEMENTOS MÓVILES ---
-        class MovableItem {
-            constructor(obj, labelObj, defaultPos, defaultRot, name, type) {
-                this.obj = obj;
-                this.label = labelObj;
-                this.defaultPos = defaultPos.clone();
-                this.defaultRot = defaultRot;
-                this.name = name;
-                this.type = type;
-                this.obj.userData = { movable: true, itemRef: this };
-                if (this.label) this.label.userData = { movable: true, itemRef: this };
-                this.setPosition(defaultPos.x, defaultPos.y, defaultPos.z);
-                this.setRotation(defaultRot);
-            }
-            setPosition(x, y, z) {
-                this.obj.position.set(x, y, z);
-                if (this.label) this.label.position.set(x, y + 0.15, z);
-            }
-            setRotation(degY) {
-                this.obj.rotation.y = degY * Math.PI / 180;
-                this.currentRotY = degY;
-            }
-            reset() {
-                this.setPosition(this.defaultPos.x, this.defaultPos.y, this.defaultPos.z);
-                this.setRotation(this.defaultRot);
-            }
-            getPos() { return this.obj.position; }
-            getRotY() { return this.currentRotY; }
+        // Layouts alternativos para compatibilidad
+        const layout2x1 = {
+            lavaderos: [
+                { x: 0.55, y: 0.30, w: LAV_W, h: LAV_H },
+                { x: BASE - 0.55 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H }
+            ]
+        };
+        
+        const layout4x2 = {
+            lavaderos: [
+                { x: 0.32, y: 0.30, w: LAV_W, h: LAV_H },
+                { x: 1.12, y: 0.30, w: LAV_W, h: LAV_H },
+                { x: BASE - 0.32 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H },
+                { x: BASE - 1.12 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H }
+            ]
+        };
+        
+        let currentLayout = "leftonly"; // '2x1', '4x2', 'leftonly'
+        
+        // Canvas
+        const canvas = document.getElementById('planoCanvas');
+        const ctx = canvas.getContext('2d');
+        const CANVAS_W = 1100;
+        const CANVAS_H = 800;
+        canvas.width = CANVAS_W;
+        canvas.height = CANVAS_H;
+        
+        const WORLD_X_MIN = -0.8;
+        const WORLD_X_MAX = BASE + 0.8;
+        const WORLD_Y_MIN = -0.8;
+        const WORLD_Y_MAX = ALTURA + 1.0;
+        
+        function worldToCanvas(x, y) {
+            const tx = (x - WORLD_X_MIN) / (WORLD_X_MAX - WORLD_X_MIN);
+            const ty = (y - WORLD_Y_MIN) / (WORLD_Y_MAX - WORLD_Y_MIN);
+            return { x: tx * CANVAS_W, y: CANVAS_H - (ty * CANVAS_H) };
         }
         
-        // --- FUNCIÓN PARA CREAR ETIQUETAS CSS2D ---
-        function makeLabel(text, color, offsetY = 0.8, bgOpacity = 0.7) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            div.style.color = color;
-            div.style.fontSize = '0.7rem';
-            div.style.fontWeight = 'bold';
-            div.style.backgroundColor = `rgba(0,0,0,${bgOpacity})`;
-            div.style.padding = '2px 8px';
-            div.style.borderRadius = '20px';
-            div.style.borderLeft = `3px solid ${color}`;
-            div.style.fontFamily = 'monospace';
-            div.style.whiteSpace = 'nowrap';
-            const label = new CSS2DObject(div);
-            return label;
-        }
-        
-        // --- CREAR ELEMENTOS ---
-        // 1. Caseta de agua (2x1.5x2.2)
-        const casetaW = 2.0, casetaD = 1.5, casetaH = 2.2;
-        const casetaGeom = new THREE.BoxGeometry(casetaW, casetaH, casetaD);
-        const casetaMat = new THREE.MeshStandardMaterial({ color: 0xbc9a6c, roughness: 0.4 });
-        const casetaMesh = new THREE.Mesh(casetaGeom, casetaMat);
-        casetaMesh.castShadow = true;
-        casetaMesh.receiveShadow = true;
-        scene.add(casetaMesh);
-        const casetaLabel = makeLabel('🏠 Caseta agua 2.00x1.50m', '#ffdd99');
-        scene.add(casetaLabel);
-        // Techo
-        const roofGeom = new THREE.CylinderGeometry(1.15, 1.15, 0.25, 4);
-        const roofMat = new THREE.MeshStandardMaterial({ color: 0xaa7c4a });
-        const roof = new THREE.Mesh(roofGeom, roofMat);
-        roof.castShadow = true;
-        casetaMesh.add(roof);
-        roof.position.set(0, casetaH/2 + 0.1, 0);
-        
-        // 2. Lavaderos (2 unidades lado izquierdo)
-        const lavW = 0.70, lavD = 0.55, lavH = 0.80;
-        const lavMaterial = new THREE.MeshStandardMaterial({ color: 0x8cb36b, roughness: 0.3 });
-        const lavInteriorMat = new THREE.MeshStandardMaterial({ color: 0xcad2b0 });
-        
-        function createLavadero(x, z, id) {
-            const group = new THREE.Group();
-            const body = new THREE.BoxGeometry(lavW, lavH, lavD);
-            const meshBody = new THREE.Mesh(body, lavMaterial);
-            meshBody.position.y = lavH/2;
-            meshBody.castShadow = true;
-            group.add(meshBody);
-            const interior = new THREE.BoxGeometry(lavW - 0.12, 0.22, lavD - 0.12);
-            const intMesh = new THREE.Mesh(interior, lavInteriorMat);
-            intMesh.position.y = lavH - 0.09;
-            group.add(intMesh);
-            const grifoGeom = new THREE.CylinderGeometry(0.05, 0.07, 0.2, 6);
-            const grifoMat = new THREE.MeshStandardMaterial({ color: 0xddbb88 });
-            const grifo = new THREE.Mesh(grifoGeom, grifoMat);
-            grifo.position.set(-0.2, lavH - 0.05, 0.22);
-            group.add(grifo);
-            group.position.set(x, 0, z);
-            scene.add(group);
-            const label = makeLabel(`🧼 Lavadero ${id} 0.70x0.55m`, '#ccffaa', 0.9);
-            scene.add(label);
-            return { group, label };
-        }
-        
-        const lav1 = createLavadero(0.35, 0.25, 'A');
-        const lav2 = createLavadero(1.15, 0.25, 'B');
-        
-        // 3. Entrada/Salida (postes + dintel)
-        const entradaGroup = new THREE.Group();
-        const postMat = new THREE.MeshStandardMaterial({ color: 0xc29b5a });
-        const postGeom = new THREE.BoxGeometry(0.12, 1.2, 0.12);
-        const leftPost = new THREE.Mesh(postGeom, postMat);
-        const rightPost = new THREE.Mesh(postGeom, postMat);
-        leftPost.position.set(-0.5, 0.6, 0);
-        rightPost.position.set(0.5, 0.6, 0);
-        const lintelGeom = new THREE.BoxGeometry(1.1, 0.1, 0.2);
-        const lintel = new THREE.Mesh(lintelGeom, new THREE.MeshStandardMaterial({ color: 0xb87c3a }));
-        lintel.position.set(0, 1.15, 0);
-        entradaGroup.add(leftPost, rightPost, lintel);
-        scene.add(entradaGroup);
-        const entradaLabel = makeLabel('🚪 Entrada/Salida 1.00m', '#ffcc77', 1.0);
-        scene.add(entradaLabel);
-        
-        // 4. Indicador pasillo central (linea y flecha)
-        const linePoints = [new THREE.Vector3(0, 0, 0.8), new THREE.Vector3(0, 0, 3.5), new THREE.Vector3(0, 0, 5.2)];
-        const lineGeom = new THREE.BufferGeometry().setFromPoints(linePoints);
-        const lineMatPas = new THREE.LineBasicMaterial({ color: 0xffaa55 });
-        const centralLine = new THREE.Line(lineGeom, lineMatPas);
-        scene.add(centralLine);
-        const arrowCone = new THREE.ConeGeometry(0.12, 0.35, 8);
-        const arrowMat = new THREE.MeshStandardMaterial({ color: 0xeeaa55 });
-        const arrow = new THREE.Mesh(arrowCone, arrowMat);
-        arrow.position.set(0, 0.2, 5.4);
-        arrow.rotation.x = 0.2;
-        scene.add(arrow);
-        const pasilloLabel = makeLabel('⬅️ Pasillo central ➡️', '#ffe0aa', 0.8);
-        scene.add(pasilloLabel);
-        
-        // --- INICIALIZAR ITEMS MÓVILES ---
-        const movableItems = [];
-        
-        const casetaItem = new MovableItem(casetaMesh, casetaLabel, new THREE.Vector3(3, 1.1, 0.75), 0, "Caseta de agua", "building");
-        movableItems.push(casetaItem);
-        
-        const lav1Item = new MovableItem(lav1.group, lav1.label, new THREE.Vector3(0.35, 0.4, 0.25), 0, "Lavadero A (izquierdo)", "lavadero");
-        const lav2Item = new MovableItem(lav2.group, lav2.label, new THREE.Vector3(1.15, 0.4, 0.25), 0, "Lavadero B (izquierdo)", "lavadero");
-        movableItems.push(lav1Item, lav2Item);
-        
-        const entradaItem = new MovableItem(entradaGroup, entradaLabel, new THREE.Vector3(3, 0, 7.416), 0, "Entrada/Salida", "entrada");
-        movableItems.push(entradaItem);
-        
-        const pasilloLineItem = new MovableItem(centralLine, null, new THREE.Vector3(3, 0.08, 3), 0, "Línea pasillo (referencia)", "line");
-        // Las flechas y labels auxiliares no son totalmente movibles individualmente, pero movemos el grupo del pasillo? simplificamos: solo mover linea central y flecha como grupo visual.
-        const arrowItem = new MovableItem(arrow, null, new THREE.Vector3(3, 0.2, 5.4), 0, "Flecha pasillo", "arrow");
-        const pasilloLabelItem = new MovableItem(pasilloLabel, null, new THREE.Vector3(3, 0.9, 3.2), 0, "Texto pasillo", "label");
-        movableItems.push(pasilloLineItem, arrowItem, pasilloLabelItem);
-        
-        // Actualizar posiciones iniciales de los items recién creados
-        casetaItem.setPosition(3, 1.1, 0.75);
-        lav1Item.setPosition(0.35, 0.4, 0.25);
-        lav2Item.setPosition(1.15, 0.4, 0.25);
-        entradaItem.setPosition(3, 0, 7.416);
-        pasilloLineItem.setPosition(3, 0.08, 3);
-        arrowItem.setPosition(3, 0.2, 5.4);
-        pasilloLabelItem.setPosition(3, 0.9, 3.2);
-        
-        // Ajustar rotaciones por defecto
-        casetaItem.setRotation(0);
-        lav1Item.setRotation(0);
-        lav2Item.setRotation(0);
-        entradaItem.setRotation(0);
-        pasilloLineItem.setRotation(0);
-        arrowItem.setRotation(0);
-        pasilloLabelItem.setRotation(0);
-        
-        // --- INTERACCIÓN: RAYCASTER PARA SELECCIONAR ---
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        let selectedItem = null;
-        
-        function highlightItem(item, enable) {
-            if (!item || !item.obj) return;
-            if (enable) {
-                item.obj.children.forEach(child => {
-                    if (child.material) child.material.emissive = new THREE.Color(0x442200);
-                });
-                if (item.obj.material) item.obj.material.emissive = new THREE.Color(0x442200);
-            } else {
-                item.obj.children.forEach(child => {
-                    if (child.material) child.material.emissive = new THREE.Color(0x000000);
-                });
-                if (item.obj.material) item.obj.material.emissive = new THREE.Color(0x000000);
+        function drawGrid() {
+            ctx.save();
+            ctx.globalAlpha = 0.15;
+            ctx.beginPath();
+            ctx.strokeStyle = "#998f6b";
+            ctx.lineWidth = 0.6;
+            for (let x = 0; x <= BASE+0.5; x+=1.0) {
+                let p1 = worldToCanvas(x, WORLD_Y_MIN);
+                let p2 = worldToCanvas(x, WORLD_Y_MAX);
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
             }
+            for (let y = 0; y <= ALTURA+1; y+=1.0) {
+                let p1 = worldToCanvas(WORLD_X_MIN, y);
+                let p2 = worldToCanvas(WORLD_X_MAX, y);
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            ctx.restore();
         }
         
-        window.addEventListener('click', (event) => {
-            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-            raycaster.setFromCamera(mouse, camera);
-            const clickableObjects = [];
-            movableItems.forEach(item => {
-                if (item.obj) clickableObjects.push(item.obj);
-                if (item.label) clickableObjects.push(item.label);
+        function drawTriangle() {
+            const pA = worldToCanvas(A.x, A.y);
+            const pB = worldToCanvas(B.x, B.y);
+            const pC = worldToCanvas(C.x, C.y);
+            ctx.beginPath();
+            ctx.moveTo(pA.x, pA.y);
+            ctx.lineTo(pB.x, pB.y);
+            ctx.lineTo(pC.x, pC.y);
+            ctx.closePath();
+            ctx.fillStyle = "#fffcf0";
+            ctx.fill();
+            ctx.strokeStyle = "#7d5f38";
+            ctx.lineWidth = 2.8;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(pA.x, pA.y);
+            ctx.lineTo(pB.x, pB.y);
+            ctx.strokeStyle = "#b4813c";
+            ctx.lineWidth = 3.2;
+            ctx.stroke();
+            ctx.font = "bold 14px 'Segoe UI'";
+            ctx.fillStyle = "#34623c";
+            const midBase = worldToCanvas(BASE/2, -0.22);
+            ctx.fillText("6.00 m", midBase.x - 24, midBase.y - 4);
+            const midLeft = worldToCanvas((A.x+C.x)/2, (A.y+C.y)/2 + 0.2);
+            ctx.fillText("8.00 m", midLeft.x - 32, midLeft.y - 8);
+            const midRight = worldToCanvas((B.x+C.x)/2, (B.y+C.y)/2 + 0.2);
+            ctx.fillText("8.00 m", midRight.x + 5, midRight.y - 8);
+            ctx.beginPath();
+            ctx.setLineDash([5,5]);
+            ctx.moveTo(worldToCanvas(BASE/2, 0).x, worldToCanvas(BASE/2, 0).y);
+            ctx.lineTo(worldToCanvas(BASE/2, ALTURA).x, worldToCanvas(BASE/2, ALTURA).y);
+            ctx.strokeStyle = "#bc8f4b";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            const midHeight = worldToCanvas(BASE/2, ALTURA/2);
+            ctx.fillStyle = "#745b30";
+            ctx.font = "italic 11px";
+            ctx.fillText(`h = ${ALTURA.toFixed(3)} m`, midHeight.x + 8, midHeight.y - 4);
+        }
+        
+        function drawCasita() {
+            const p1 = worldToCanvas(CASETA_X1, CASETA_Y_BASE);
+            const p2 = worldToCanvas(CASETA_X2, CASETA_Y_BASE);
+            const p3 = worldToCanvas(CASETA_X2, CASETA_Y_TOP);
+            const p4 = worldToCanvas(CASETA_X1, CASETA_Y_TOP);
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineTo(p3.x, p3.y);
+            ctx.lineTo(p4.x, p4.y);
+            ctx.closePath();
+            ctx.fillStyle = "#bc9a6c";
+            ctx.fill();
+            ctx.strokeStyle = "#7a582e";
+            ctx.stroke();
+            const center = worldToCanvas((CASETA_X1+CASETA_X2)/2, CASETA_Y_TOP/2);
+            ctx.font = "bold 14px";
+            ctx.fillStyle = "#fef0cf";
+            ctx.fillText("💧", center.x-10, center.y+5);
+            ctx.font = "bold 9px monospace";
+            ctx.fillStyle = "#2d2418";
+            ctx.fillText("AGUA", center.x-18, center.y-8);
+            ctx.font = "8px sans-serif";
+            const pAncho = worldToCanvas(CASETA_X1+1.0, -0.2);
+            ctx.fillText("2.00 m", pAncho.x-12, pAncho.y-2);
+        }
+        
+        function drawLavaderos(list) {
+            list.forEach(l => {
+                const tl = worldToCanvas(l.x, l.y);
+                const br = worldToCanvas(l.x + l.w, l.y + l.h);
+                const w = br.x - tl.x;
+                const h = br.y - tl.y;
+                ctx.fillStyle = "#5f8b4c";
+                ctx.fillRect(tl.x, tl.y, w, h);
+                ctx.fillStyle = "#eef5e5";
+                ctx.fillRect(tl.x+2, tl.y+2, w-4, h-4);
+                ctx.fillStyle = "#2f5e2a";
+                ctx.font = "bold 17px 'Segoe UI'";
+                ctx.fillText("🧼", tl.x + w/2 - 10, tl.y + h/2 + 5);
+                ctx.strokeRect(tl.x, tl.y, w, h);
+                ctx.font = "7px monospace";
+                ctx.fillStyle = "#1e3c1a";
+                ctx.fillText(`${l.w.toFixed(2)}m`, tl.x + w - 22, tl.y + h - 4);
+                ctx.fillText(`${l.h.toFixed(2)}m`, tl.x + 3, tl.y + h - 4);
             });
-            const intersects = raycaster.intersectObjects(clickableObjects, true);
-            if (intersects.length > 0) {
-                let found = null;
-                for (let obj of intersects) {
-                    let current = obj.object;
-                    while (current) {
-                        if (current.userData && current.userData.itemRef) {
-                            found = current.userData.itemRef;
-                            break;
-                        }
-                        current = current.parent;
-                    }
-                    if (found) break;
-                }
-                if (found && found !== selectedItem) {
-                    if (selectedItem) highlightItem(selectedItem, false);
-                    selectedItem = found;
-                    highlightItem(selectedItem, true);
-                    updateUIFromSelected();
-                }
+        }
+        
+        function drawEntrada() {
+            const p1 = worldToCanvas(ENTRADA_X1, ENTRADA_Y);
+            const p2 = worldToCanvas(ENTRADA_X2, ENTRADA_Y);
+            const p3 = worldToCanvas(ENTRADA_X2, ENTRADA_Y - 0.28);
+            const p4 = worldToCanvas(ENTRADA_X1, ENTRADA_Y - 0.28);
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineTo(p3.x, p3.y);
+            ctx.lineTo(p4.x, p4.y);
+            ctx.closePath();
+            ctx.fillStyle = "#f4c542";
+            ctx.fill();
+            ctx.strokeStyle = "#b47c2e";
+            ctx.stroke();
+            const pm = worldToCanvas(VERTEX_X, ENTRADA_Y-0.12);
+            ctx.fillStyle = "#5c411c";
+            ctx.font = "bold 9px monospace";
+            ctx.fillText("🚪 ENTRADA 1m", pm.x-34, pm.y-4);
+        }
+        
+        function drawPasilloIndicador() {
+            if (currentLayout === "leftonly") {
+                // Resaltar visualmente el pasillo central y lado derecho libre
+                const centroX = BASE/2;
+                const izq = worldToCanvas(centroX-0.6, 1.0);
+                const der = worldToCanvas(centroX+1.0, 5.2);
+                ctx.fillStyle = "#f7f2e0";
+                ctx.globalAlpha = 0.35;
+                ctx.fillRect(izq.x, izq.y, der.x-izq.x, der.y-izq.y);
+                ctx.globalAlpha = 1;
+                // Flecha de circulación
+                const start = worldToCanvas(centroX, 1.7);
+                const end = worldToCanvas(centroX, 4.0);
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(end.x, end.y);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#b48b44";
+                ctx.setLineDash([8,6]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = "#b48b44";
+                ctx.beginPath();
+                ctx.moveTo(end.x, end.y);
+                ctx.lineTo(end.x-5, end.y-7);
+                ctx.lineTo(end.x+5, end.y-7);
+                ctx.fill();
+                ctx.fillStyle = "#8b6942";
+                ctx.font = "italic 9px";
+                ctx.fillText("PASILLO CENTRAL", start.x-40, start.y-8);
+                
+                // Texto lado derecho libre
+                const rightFree = worldToCanvas(4.8, 1.5);
+                ctx.fillStyle = "#7a6a48";
+                ctx.font = "italic 8px";
+                ctx.fillText("ZONA LIBRE", rightFree.x-20, rightFree.y);
+            }
+        }
+        
+        function drawAnnotations() {
+            ctx.save();
+            ctx.setLineDash([4,5]);
+            ctx.strokeStyle = "#ab8b54";
+            const leftSpace = worldToCanvas(1.0, -0.25);
+            const rightSpace = worldToCanvas(5.0, -0.25);
+            ctx.fillStyle = "#826e48";
+            ctx.font = "8px";
+            ctx.fillText("↹ 2.00 m libre", leftSpace.x-28, leftSpace.y-3);
+            ctx.fillText("↹ 2.00 m libre", rightSpace.x-24, rightSpace.y-3);
+            ctx.setLineDash([]);
+            ctx.restore();
+        }
+        
+        function drawScale() {
+            const p1 = worldToCanvas(0.2, -0.5);
+            const p2 = worldToCanvas(1.2, -0.5);
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = "#6f5a36";
+            ctx.stroke();
+            ctx.fillStyle = "#434125";
+            ctx.font = "8px";
+            ctx.fillText("1 metro", (p1.x+p2.x)/2-12, p1.y-5);
+        }
+        
+        function drawTitle() {
+            ctx.font = "bold 13px 'Segoe UI'";
+            ctx.fillStyle = "#3c3b28";
+            ctx.fillText("DISTRIBUCIÓN DE LAVADEROS · ENFOQUE EN COSTADO IZQUIERDO", 40, 45);
+            ctx.font = "italic 8px";
+            ctx.fillStyle = "#6f694e";
+            ctx.fillText("Dos lavaderos de 0.70x0.55m | Lado derecho libre | Entrada superior de 1m", 40, 63);
+        }
+        
+        function render() {
+            ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+            ctx.fillStyle = "#fffcf5";
+            ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+            drawGrid();
+            drawTriangle();
+            drawCasita();
+            if (currentLayout === "2x1") {
+                drawLavaderos(layout2x1.lavaderos);
+            } else if (currentLayout === "4x2") {
+                drawLavaderos(layout4x2.lavaderos);
             } else {
-                if (selectedItem) highlightItem(selectedItem, false);
-                selectedItem = null;
-                document.getElementById('selectedName').innerText = 'Ninguno seleccionado';
-                document.getElementById('posX').value = '';
-                document.getElementById('posY').value = '';
-                document.getElementById('posZ').value = '';
-                document.getElementById('rotY').value = '';
+                drawLavaderos(lavaderosLeftOnly);
+                drawPasilloIndicador();
             }
-        });
-        
-        function updateUIFromSelected() {
-            if (!selectedItem) return;
-            document.getElementById('selectedName').innerHTML = `✅ ${selectedItem.name}`;
-            const pos = selectedItem.getPos();
-            document.getElementById('posX').value = pos.x.toFixed(3);
-            document.getElementById('posY').value = pos.y.toFixed(3);
-            document.getElementById('posZ').value = pos.z.toFixed(3);
-            document.getElementById('rotY').value = selectedItem.getRotY().toFixed(1);
+            drawEntrada();
+            drawAnnotations();
+            drawScale();
+            drawTitle();
+            
+            // Panel resumen
+            ctx.fillStyle = "#f1ecdc";
+            ctx.fillRect(CANVAS_W-180, CANVAS_H-70, 175, 55);
+            ctx.fillStyle = "#4f623b";
+            ctx.font = "bold 8px monospace";
+            ctx.fillText("Opción activa:", CANVAS_W-175, CANVAS_H-52);
+            if (currentLayout === "2x1") ctx.fillText("✔ 2 lavaderos (izq+der)", CANVAS_W-170, CANVAS_H-37);
+            else if (currentLayout === "4x2") ctx.fillText("✔ 4 lavaderos (2 izq+2 der)", CANVAS_W-170, CANVAS_H-37);
+            else ctx.fillText("✔ 2 LAVADEROS SOLO IZQUIERDA", CANVAS_W-170, CANVAS_H-37);
         }
         
-        // Aplicar cambios manualmente
-        document.getElementById('applyBtn').addEventListener('click', () => {
-            if (!selectedItem) return;
-            const x = parseFloat(document.getElementById('posX').value);
-            const y = parseFloat(document.getElementById('posY').value);
-            const z = parseFloat(document.getElementById('posZ').value);
-            const rot = parseFloat(document.getElementById('rotY').value);
-            if (!isNaN(x) && !isNaN(y) && !isNaN(z)) selectedItem.setPosition(x, y, z);
-            if (!isNaN(rot)) selectedItem.setRotation(rot);
-            updateUIFromSelected();
-        });
+        const btn2 = document.getElementById('btnLayout2x1');
+        const btn4 = document.getElementById('btnLayout4x2');
+        const btnLeft = document.getElementById('btnLeftOnly');
         
-        document.getElementById('resetPosBtn').addEventListener('click', () => {
-            movableItems.forEach(item => item.reset());
-            if (selectedItem) updateUIFromSelected();
-        });
-        
-        // Llenar selector de elementos
-        const selectEl = document.getElementById('elementSelect');
-        movableItems.forEach((item, idx) => {
-            const option = document.createElement('option');
-            option.value = idx;
-            option.textContent = item.name;
-            selectEl.appendChild(option);
-        });
-        selectEl.addEventListener('change', (e) => {
-            const idx = parseInt(e.target.value);
-            if (!isNaN(idx) && movableItems[idx]) {
-                if (selectedItem) highlightItem(selectedItem, false);
-                selectedItem = movableItems[idx];
-                highlightItem(selectedItem, true);
-                updateUIFromSelected();
-            }
-        });
-        
-        // --- ANIMACIÓN Y RENDER ---
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-            labelRenderer.render(scene, camera);
+        function setLayout(lay) {
+            currentLayout = lay;
+            btn2.classList.remove('active');
+            btn4.classList.remove('active');
+            btnLeft.classList.remove('active');
+            if (lay === '2x1') btn2.classList.add('active');
+            else if (lay === '4x2') btn4.classList.add('active');
+            else btnLeft.classList.add('active');
+            render();
         }
-        animate();
         
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        btn2.addEventListener('click', () => setLayout('2x1'));
+        btn4.addEventListener('click', () => setLayout('4x2'));
+        btnLeft.addEventListener('click', () => setLayout('leftonly'));
         
-        // Mostrar ayuda inicial
-        console.log('Editor 3D cargado - Haz clic en cualquier elemento (caseta, lavadero, entrada) para moverlo.');
-    </script>
+        window.addEventListener('resize', () => render());
+        render();
+    })();
+</script>
 </body>
 </html>
