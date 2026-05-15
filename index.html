@@ -3,89 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Lavaderos Comunitarios - Visor 3D | Medidas reales alineadas para albañilería</title>
+    <title>Editor 3D Lavaderos Comunitarios - Mueve y acomoda los elementos</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        #info {
+        #controls-panel {
             position: absolute;
             top: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 12px;
-            pointer-events: none;
-            z-index: 10;
-            border-left: 5px solid #f4c542;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            font-size: 14px;
-            max-width: 300px;
-        }
-        #info h1 {
-            margin: 0 0 5px;
-            font-size: 1.1rem;
-        }
-        #info p {
-            margin: 0;
-            font-size: 0.75rem;
-            opacity: 0.9;
-        }
-        #medidas-panel {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            color: #ffecb3;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 12px;
-            z-index: 10;
-            pointer-events: none;
-            border-top: 3px solid #da7a2c;
-            line-height: 1.4;
-        }
-        .controls-note {
-            position: absolute;
-            bottom: 20px;
             right: 20px;
-            background: rgba(0,0,0,0.6);
-            color: #ccc;
-            padding: 5px 12px;
+            background: rgba(30,30,40,0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 15px;
+            color: white;
+            z-index: 20;
+            width: 260px;
+            border: 1px solid rgba(255,215,120,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            pointer-events: auto;
+            font-size: 13px;
+        }
+        #controls-panel h3 {
+            margin: 0 0 8px 0;
+            font-size: 1rem;
+            text-align: center;
+            color: #ffcd7e;
+        }
+        .control-group {
+            margin-bottom: 12px;
+            border-top: 1px solid #555;
+            padding-top: 8px;
+        }
+        .control-group label {
+            display: block;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+            color: #ddd;
+        }
+        select, input {
+            width: 100%;
+            padding: 6px;
+            border-radius: 8px;
+            border: none;
+            background: #2c2c34;
+            color: white;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+        .coord-group {
+            display: flex;
+            gap: 8px;
+        }
+        .coord-group input {
+            width: 33%;
+            text-align: center;
+        }
+        button {
+            background: #f0a34b;
+            border: none;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 11px;
-            font-family: monospace;
-            pointer-events: none;
-            z-index: 10;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            color: #2d2d2d;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #ffb86b;
+            transform: scale(1.02);
+        }
+        .selected-info {
+            background: #00000066;
+            border-radius: 8px;
+            padding: 6px;
+            text-align: center;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+            color: #ffd966;
+        }
+        hr {
+            border-color: #555;
+            margin: 8px 0;
+        }
+        .note {
+            font-size: 0.65rem;
+            text-align: center;
+            margin-top: 8px;
+            color: #ccc;
         }
         @media (max-width: 700px) {
-            #info { font-size: 9px; max-width: 240px; top: 10px; left: 10px; padding: 8px 12px; }
-            #medidas-panel { font-size: 9px; bottom: 10px; left: 10px; }
+            #controls-panel { width: 240px; padding: 10px; top: 10px; right: 10px; }
+            .coord-group input { font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
-    <div id="info">
-        <h1>🧱 LAVADEROS COMUNITARIOS · PLANO 3D EJECUTIVO</h1>
-        <p>Terreno triangular | Base 6m | Lados 8m | Altura 7.416m | 2 lavaderos lado izquierdo</p>
-        <p style="font-size:11px; margin-top:4px;">✅ Todas las medidas y posiciones están corregidas y alineadas al sistema de coordenadas reales.</p>
-    </div>
-    <div id="medidas-panel">
-        📐 <strong>DETALLES CONSTRUCTIVOS (metros):</strong><br>
-        • Lavadero: 0.70 (ancho) x 0.55 (fondo) x 0.80 (alto)<br>
-        • Caseta agua: 2.00 x 1.50 x 2.20 m<br>
-        • Entrada vértice: 1.00 m de ancho<br>
-        • Pasillo central libre ≥ 1.20 m<br>
-        • Coordenadas: Z = eje hacia el vértice, X = ancho base
-    </div>
-    <div class="controls-note">
-        🖱️ Arrastrar: rotar | Botón derecho: mover | Rueda: zoom
+    <div id="controls-panel">
+        <h3>🛠️ EDITOR INTERACTIVO</h3>
+        <div class="selected-info" id="selectedName">Selecciona un elemento</div>
+        <div class="control-group">
+            <label>📌 Elemento</label>
+            <select id="elementSelect"></select>
+        </div>
+        <div class="control-group">
+            <label>📍 Posición (X, Y, Z) - metros</label>
+            <div class="coord-group">
+                <input type="number" id="posX" step="0.05" placeholder="X">
+                <input type="number" id="posY" step="0.05" placeholder="Y">
+                <input type="number" id="posZ" step="0.05" placeholder="Z">
+            </div>
+        </div>
+        <div class="control-group">
+            <label>🔄 Rotación (Y-axis, grados)</label>
+            <input type="number" id="rotY" step="5" placeholder="Grados">
+        </div>
+        <button id="applyBtn">📐 Aplicar cambios</button>
+        <hr>
+        <button id="resetPosBtn">⟳ Restablecer posiciones originales</button>
+        <div class="note">💡 Haz clic en cualquier elemento para seleccionarlo.<br>Arrastra con ratón para orbitar | Botón derecho para mover vista</div>
     </div>
 
     <script type="importmap">
@@ -102,14 +142,13 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
-        // --- CONFIGURACIÓN INICIAL ---
+        // --- INICIALIZACIÓN ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0a1a2a);
-        scene.fog = new THREE.FogExp2(0x0a1a2a, 0.006);
+        scene.background = new THREE.Color(0x0f1e2c);
+        scene.fog = new THREE.FogExp2(0x0f1e2c, 0.008);
 
-        // Cámara: posición adecuada para apreciar todo el triángulo
         const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.set(5, 5, 9);
+        camera.position.set(7, 5, 9);
         camera.lookAt(3, 1.5, 3.5);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -132,46 +171,94 @@
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 1.2;
         controls.panSpeed = 0.8;
-        controls.target.set(3, 1.2, 3.5);
+        controls.target.set(3, 1.5, 3.5);
 
-        // --- ILUMINACIÓN MEJORADA ---
-        const ambientLight = new THREE.AmbientLight(0x4a5a6a);
-        scene.add(ambientLight);
+        // --- ILUMINACIÓN ---
+        const ambient = new THREE.AmbientLight(0x4a5a6a);
+        scene.add(ambient);
         const mainLight = new THREE.DirectionalLight(0xfff5e0, 1.2);
-        mainLight.position.set(4, 8, 3);
+        mainLight.position.set(5, 10, 4);
         mainLight.castShadow = true;
         mainLight.receiveShadow = true;
         mainLight.shadow.mapSize.width = 1024;
         mainLight.shadow.mapSize.height = 1024;
         mainLight.shadow.camera.near = 0.5;
-        mainLight.shadow.camera.far = 15;
-        mainLight.shadow.camera.left = -5;
-        mainLight.shadow.camera.right = 5;
-        mainLight.shadow.camera.top = 5;
-        mainLight.shadow.camera.bottom = -5;
+        mainLight.shadow.camera.far = 18;
         scene.add(mainLight);
-        const fillLight = new THREE.PointLight(0xccaa77, 0.5);
+        const fillLight = new THREE.PointLight(0xccaa77, 0.45);
         fillLight.position.set(2, 2, 2);
         scene.add(fillLight);
-        const backLight = new THREE.PointLight(0x6688aa, 0.35);
+        const backLight = new THREE.PointLight(0x6688aa, 0.3);
         backLight.position.set(1, 3, -3);
         scene.add(backLight);
-
-        // Helper: suelo de referencia (grid)
+        
+        // Helper suelo
         const gridHelper = new THREE.GridHelper(14, 20, 0xaa9977, 0x776644);
         gridHelper.position.y = -0.05;
         gridHelper.material.transparent = true;
-        gridHelper.material.opacity = 0.3;
+        gridHelper.material.opacity = 0.35;
         scene.add(gridHelper);
-
-        // Función para etiquetas CSS2D
-        function makeLabel(text, color, position, fontSize = '0.8rem', bgOpacity = 0.7) {
+        
+        // --- TERRENO FIJO (triángulo isósceles) ---
+        const shape = new THREE.Shape();
+        shape.moveTo(0, 0);
+        shape.lineTo(6, 0);
+        shape.lineTo(3, 7.416);
+        shape.closePath();
+        const extrudeSettings = { steps: 1, depth: 0.1, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05 };
+        const terrainGeom = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        terrainGeom.rotateX(-Math.PI / 2);
+        terrainGeom.translate(0, -0.05, 0);
+        const terrainMat = new THREE.MeshStandardMaterial({ color: 0xd4c8a0, roughness: 0.7 });
+        const terrainMesh = new THREE.Mesh(terrainGeom, terrainMat);
+        terrainMesh.receiveShadow = true;
+        scene.add(terrainMesh);
+        
+        // Borde triangular decorativo
+        const borderPoints = [
+            new THREE.Vector3(0, 0.02, 0), new THREE.Vector3(6, 0.02, 0),
+            new THREE.Vector3(3, 0.02, 7.416), new THREE.Vector3(0, 0.02, 0)
+        ];
+        const borderLine = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(borderPoints), new THREE.LineBasicMaterial({ color: 0xffaa66 }));
+        scene.add(borderLine);
+        
+        // --- CLASE PARA ELEMENTOS MÓVILES ---
+        class MovableItem {
+            constructor(obj, labelObj, defaultPos, defaultRot, name, type) {
+                this.obj = obj;
+                this.label = labelObj;
+                this.defaultPos = defaultPos.clone();
+                this.defaultRot = defaultRot;
+                this.name = name;
+                this.type = type;
+                this.obj.userData = { movable: true, itemRef: this };
+                if (this.label) this.label.userData = { movable: true, itemRef: this };
+                this.setPosition(defaultPos.x, defaultPos.y, defaultPos.z);
+                this.setRotation(defaultRot);
+            }
+            setPosition(x, y, z) {
+                this.obj.position.set(x, y, z);
+                if (this.label) this.label.position.set(x, y + 0.15, z);
+            }
+            setRotation(degY) {
+                this.obj.rotation.y = degY * Math.PI / 180;
+                this.currentRotY = degY;
+            }
+            reset() {
+                this.setPosition(this.defaultPos.x, this.defaultPos.y, this.defaultPos.z);
+                this.setRotation(this.defaultRot);
+            }
+            getPos() { return this.obj.position; }
+            getRotY() { return this.currentRotY; }
+        }
+        
+        // --- FUNCIÓN PARA CREAR ETIQUETAS CSS2D ---
+        function makeLabel(text, color, offsetY = 0.8, bgOpacity = 0.7) {
             const div = document.createElement('div');
             div.textContent = text;
             div.style.color = color;
-            div.style.fontSize = fontSize;
+            div.style.fontSize = '0.7rem';
             div.style.fontWeight = 'bold';
-            div.style.textShadow = '1px 1px 0px black';
             div.style.backgroundColor = `rgba(0,0,0,${bgOpacity})`;
             div.style.padding = '2px 8px';
             div.style.borderRadius = '20px';
@@ -179,243 +266,233 @@
             div.style.fontFamily = 'monospace';
             div.style.whiteSpace = 'nowrap';
             const label = new CSS2DObject(div);
-            label.position.copy(position);
             return label;
         }
-
-        // ========== 1. TERRENO TRIANGULAR (base 6m en X, vértice en Z positivo) ==========
-        // Vértices: A(0,0), B(6,0), C(3, 7.416)
-        const points = [
-            new THREE.Vector2(0, 0),
-            new THREE.Vector2(6, 0),
-            new THREE.Vector2(3, 7.416)
-        ];
-        const shape = new THREE.Shape();
-        shape.moveTo(points[0].x, points[0].y);
-        shape.lineTo(points[1].x, points[1].y);
-        shape.lineTo(points[2].x, points[2].y);
-        shape.closePath();
         
-        const extrudeSettings = { steps: 1, depth: 0.1, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 2 };
-        const terrainGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-        terrainGeometry.computeVertexNormals();
-        terrainGeometry.rotateX(-Math.PI / 2);
-        terrainGeometry.translate(0, -0.05, 0);
-        const terrainMat = new THREE.MeshStandardMaterial({ color: 0xd4c8a0, roughness: 0.7, metalness: 0.05 });
-        const terrainMesh = new THREE.Mesh(terrainGeometry, terrainMat);
-        terrainMesh.receiveShadow = true;
-        terrainMesh.castShadow = false;
-        scene.add(terrainMesh);
-
-        // Borde del triángulo (línea resaltada)
-        const borderPoints3D = [
-            new THREE.Vector3(0, 0.02, 0),
-            new THREE.Vector3(6, 0.02, 0),
-            new THREE.Vector3(3, 0.02, 7.416),
-            new THREE.Vector3(0, 0.02, 0)
-        ];
-        const borderLine = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(borderPoints3D), new THREE.LineBasicMaterial({ color: 0xffaa66, linewidth: 2 }));
-        scene.add(borderLine);
-
-        // ========== 2. CASETA DE AGUA (centrada en base: X desde 2 a 4, Z desde 0 a 1.5) ==========
-        const casetaW = 2.0;
-        const casetaD = 1.5;
-        const casetaH = 2.2;
-        const casetaX = 2.0;
-        const casetaZ = 0.0;
+        // --- CREAR ELEMENTOS ---
+        // 1. Caseta de agua (2x1.5x2.2)
+        const casetaW = 2.0, casetaD = 1.5, casetaH = 2.2;
         const casetaGeom = new THREE.BoxGeometry(casetaW, casetaH, casetaD);
         const casetaMat = new THREE.MeshStandardMaterial({ color: 0xbc9a6c, roughness: 0.4 });
-        const caseta = new THREE.Mesh(casetaGeom, casetaMat);
-        caseta.position.set(casetaX + casetaW/2, casetaH/2, casetaZ + casetaD/2);
-        caseta.castShadow = true;
-        caseta.receiveShadow = true;
-        scene.add(caseta);
-        // Techo a dos aguas simbólico
+        const casetaMesh = new THREE.Mesh(casetaGeom, casetaMat);
+        casetaMesh.castShadow = true;
+        casetaMesh.receiveShadow = true;
+        scene.add(casetaMesh);
+        const casetaLabel = makeLabel('🏠 Caseta agua 2.00x1.50m', '#ffdd99');
+        scene.add(casetaLabel);
+        // Techo
         const roofGeom = new THREE.CylinderGeometry(1.15, 1.15, 0.25, 4);
         const roofMat = new THREE.MeshStandardMaterial({ color: 0xaa7c4a });
         const roof = new THREE.Mesh(roofGeom, roofMat);
-        roof.position.set(casetaX + casetaW/2, casetaH + 0.12, casetaZ + casetaD/2);
         roof.castShadow = true;
-        scene.add(roof);
+        casetaMesh.add(roof);
+        roof.position.set(0, casetaH/2 + 0.1, 0);
         
-        const aguaLabel = makeLabel('💧 TOMA DE AGUA  2.00 x 1.50 m', '#ffdd99', new THREE.Vector3(3, 1.9, 0.9), '0.75rem');
-        scene.add(aguaLabel);
-        
-        // ========== 3. LAVADEROS: 2 unidades lado izquierdo (X: 0.35 y 1.15) a Z = 0.20 ==========
-        const lavW = 0.70;
-        const lavD = 0.55;
-        const lavH = 0.80;
-        const lavaderosPos = [
-            { x: 0.35, z: 0.25 },
-            { x: 1.15, z: 0.25 }
-        ];
+        // 2. Lavaderos (2 unidades lado izquierdo)
+        const lavW = 0.70, lavD = 0.55, lavH = 0.80;
         const lavMaterial = new THREE.MeshStandardMaterial({ color: 0x8cb36b, roughness: 0.3 });
         const lavInteriorMat = new THREE.MeshStandardMaterial({ color: 0xcad2b0 });
         
-        lavaderosPos.forEach(pos => {
+        function createLavadero(x, z, id) {
             const group = new THREE.Group();
-            const bodyGeom = new THREE.BoxGeometry(lavW, lavH, lavD);
-            const body = new THREE.Mesh(bodyGeom, lavMaterial);
-            body.position.y = lavH/2;
-            body.castShadow = true;
-            body.receiveShadow = true;
-            group.add(body);
-            // Pileta interior
-            const interiorGeom = new THREE.BoxGeometry(lavW - 0.12, 0.22, lavD - 0.12);
-            const interior = new THREE.Mesh(interiorGeom, lavInteriorMat);
-            interior.position.y = lavH - 0.09;
-            interior.castShadow = true;
-            group.add(interior);
-            // Grifo
+            const body = new THREE.BoxGeometry(lavW, lavH, lavD);
+            const meshBody = new THREE.Mesh(body, lavMaterial);
+            meshBody.position.y = lavH/2;
+            meshBody.castShadow = true;
+            group.add(meshBody);
+            const interior = new THREE.BoxGeometry(lavW - 0.12, 0.22, lavD - 0.12);
+            const intMesh = new THREE.Mesh(interior, lavInteriorMat);
+            intMesh.position.y = lavH - 0.09;
+            group.add(intMesh);
             const grifoGeom = new THREE.CylinderGeometry(0.05, 0.07, 0.2, 6);
-            const grifoMat = new THREE.MeshStandardMaterial({ color: 0xddbb88, metalness: 0.6 });
+            const grifoMat = new THREE.MeshStandardMaterial({ color: 0xddbb88 });
             const grifo = new THREE.Mesh(grifoGeom, grifoMat);
             grifo.position.set(-0.2, lavH - 0.05, 0.22);
             group.add(grifo);
-            group.position.set(pos.x, 0, pos.z);
+            group.position.set(x, 0, z);
             scene.add(group);
-            
-            const labelPos = new THREE.Vector3(pos.x + lavW/2, 0.95, pos.z + lavD/2);
-            const lavLabel = makeLabel(`🧼 Lavadero\n0.70x0.55x0.80m`, '#ccffaa', labelPos, '0.65rem', 0.65);
-            scene.add(lavLabel);
-        });
+            const label = makeLabel(`🧼 Lavadero ${id} 0.70x0.55m`, '#ccffaa', 0.9);
+            scene.add(label);
+            return { group, label };
+        }
         
-        // ========== 4. ENTRADA / SALIDA EN VÉRTICE (Z = 7.416, X = 3, ancho 1m) ==========
-        const entradaAncho = 1.0;
-        const entradaX1 = 3 - entradaAncho/2;
-        const entradaX2 = 3 + entradaAncho/2;
-        const entradaZ = 7.416;
-        // Postes
+        const lav1 = createLavadero(0.35, 0.25, 'A');
+        const lav2 = createLavadero(1.15, 0.25, 'B');
+        
+        // 3. Entrada/Salida (postes + dintel)
+        const entradaGroup = new THREE.Group();
         const postMat = new THREE.MeshStandardMaterial({ color: 0xc29b5a });
         const postGeom = new THREE.BoxGeometry(0.12, 1.2, 0.12);
-        const postLeft = new THREE.Mesh(postGeom, postMat);
-        postLeft.position.set(entradaX1, 0.7, entradaZ);
-        const postRight = new THREE.Mesh(postGeom, postMat);
-        postRight.position.set(entradaX2, 0.7, entradaZ);
-        scene.add(postLeft);
-        scene.add(postRight);
-        const lintelGeom = new THREE.BoxGeometry(entradaAncho + 0.1, 0.1, 0.2);
+        const leftPost = new THREE.Mesh(postGeom, postMat);
+        const rightPost = new THREE.Mesh(postGeom, postMat);
+        leftPost.position.set(-0.5, 0.6, 0);
+        rightPost.position.set(0.5, 0.6, 0);
+        const lintelGeom = new THREE.BoxGeometry(1.1, 0.1, 0.2);
         const lintel = new THREE.Mesh(lintelGeom, new THREE.MeshStandardMaterial({ color: 0xb87c3a }));
-        lintel.position.set(3, 1.25, entradaZ);
-        scene.add(lintel);
-        const entradaLabel = makeLabel('🚪 ENTRADA/SALIDA | 1.00m ancho', '#ffcc77', new THREE.Vector3(3, 1.5, entradaZ + 0.15), '0.7rem');
+        lintel.position.set(0, 1.15, 0);
+        entradaGroup.add(leftPost, rightPost, lintel);
+        scene.add(entradaGroup);
+        const entradaLabel = makeLabel('🚪 Entrada/Salida 1.00m', '#ffcc77', 1.0);
         scene.add(entradaLabel);
         
-        // ========== 5. PASILLO CENTRAL Y DEMARCACIONES ==========
-        const puntosLinea = [
-            new THREE.Vector3(3, 0.08, 0.9),
-            new THREE.Vector3(3, 0.08, 3.2),
-            new THREE.Vector3(3, 0.08, 5.5)
-        ];
-        const lineGeom = new THREE.BufferGeometry().setFromPoints(puntosLinea);
-        const lineMat = new THREE.LineBasicMaterial({ color: 0xffaa55 });
-        const lineaCentral = new THREE.Line(lineGeom, lineMat);
-        scene.add(lineaCentral);
-        
+        // 4. Indicador pasillo central (linea y flecha)
+        const linePoints = [new THREE.Vector3(0, 0, 0.8), new THREE.Vector3(0, 0, 3.5), new THREE.Vector3(0, 0, 5.2)];
+        const lineGeom = new THREE.BufferGeometry().setFromPoints(linePoints);
+        const lineMatPas = new THREE.LineBasicMaterial({ color: 0xffaa55 });
+        const centralLine = new THREE.Line(lineGeom, lineMatPas);
+        scene.add(centralLine);
         const arrowCone = new THREE.ConeGeometry(0.12, 0.35, 8);
         const arrowMat = new THREE.MeshStandardMaterial({ color: 0xeeaa55 });
         const arrow = new THREE.Mesh(arrowCone, arrowMat);
-        arrow.position.set(3, 0.2, 5.8);
+        arrow.position.set(0, 0.2, 5.4);
         arrow.rotation.x = 0.2;
         scene.add(arrow);
-        
-        const pasilloLabel = makeLabel('⬅️ PASILLO CENTRAL (1.20m libre) ➡️', '#ffe0aa', new THREE.Vector3(3, 0.9, 3.2), '0.7rem');
+        const pasilloLabel = makeLabel('⬅️ Pasillo central ➡️', '#ffe0aa', 0.8);
         scene.add(pasilloLabel);
         
-        // ========== 6. MUROS DE CONTENCIÓN / BORDES (semi-transparentes) ==========
-        const muroMat = new THREE.MeshStandardMaterial({ color: 0xaa8c64, roughness: 0.7, transparent: true, opacity: 0.35 });
-        function addBorderSegment(p1, p2, height = 0.25) {
-            const dx = p2.x - p1.x;
-            const dz = p2.z - p1.z;
-            const length = Math.hypot(dx, dz);
-            const box = new THREE.BoxGeometry(length, height, 0.12);
-            const wall = new THREE.Mesh(box, muroMat);
-            wall.position.set((p1.x + p2.x)/2, height/2, (p1.z + p2.z)/2);
-            wall.rotation.y = Math.atan2(dx, dz);
-            wall.castShadow = true;
-            scene.add(wall);
+        // --- INICIALIZAR ITEMS MÓVILES ---
+        const movableItems = [];
+        
+        const casetaItem = new MovableItem(casetaMesh, casetaLabel, new THREE.Vector3(3, 1.1, 0.75), 0, "Caseta de agua", "building");
+        movableItems.push(casetaItem);
+        
+        const lav1Item = new MovableItem(lav1.group, lav1.label, new THREE.Vector3(0.35, 0.4, 0.25), 0, "Lavadero A (izquierdo)", "lavadero");
+        const lav2Item = new MovableItem(lav2.group, lav2.label, new THREE.Vector3(1.15, 0.4, 0.25), 0, "Lavadero B (izquierdo)", "lavadero");
+        movableItems.push(lav1Item, lav2Item);
+        
+        const entradaItem = new MovableItem(entradaGroup, entradaLabel, new THREE.Vector3(3, 0, 7.416), 0, "Entrada/Salida", "entrada");
+        movableItems.push(entradaItem);
+        
+        const pasilloLineItem = new MovableItem(centralLine, null, new THREE.Vector3(3, 0.08, 3), 0, "Línea pasillo (referencia)", "line");
+        // Las flechas y labels auxiliares no son totalmente movibles individualmente, pero movemos el grupo del pasillo? simplificamos: solo mover linea central y flecha como grupo visual.
+        const arrowItem = new MovableItem(arrow, null, new THREE.Vector3(3, 0.2, 5.4), 0, "Flecha pasillo", "arrow");
+        const pasilloLabelItem = new MovableItem(pasilloLabel, null, new THREE.Vector3(3, 0.9, 3.2), 0, "Texto pasillo", "label");
+        movableItems.push(pasilloLineItem, arrowItem, pasilloLabelItem);
+        
+        // Actualizar posiciones iniciales de los items recién creados
+        casetaItem.setPosition(3, 1.1, 0.75);
+        lav1Item.setPosition(0.35, 0.4, 0.25);
+        lav2Item.setPosition(1.15, 0.4, 0.25);
+        entradaItem.setPosition(3, 0, 7.416);
+        pasilloLineItem.setPosition(3, 0.08, 3);
+        arrowItem.setPosition(3, 0.2, 5.4);
+        pasilloLabelItem.setPosition(3, 0.9, 3.2);
+        
+        // Ajustar rotaciones por defecto
+        casetaItem.setRotation(0);
+        lav1Item.setRotation(0);
+        lav2Item.setRotation(0);
+        entradaItem.setRotation(0);
+        pasilloLineItem.setRotation(0);
+        arrowItem.setRotation(0);
+        pasilloLabelItem.setRotation(0);
+        
+        // --- INTERACCIÓN: RAYCASTER PARA SELECCIONAR ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let selectedItem = null;
+        
+        function highlightItem(item, enable) {
+            if (!item || !item.obj) return;
+            if (enable) {
+                item.obj.children.forEach(child => {
+                    if (child.material) child.material.emissive = new THREE.Color(0x442200);
+                });
+                if (item.obj.material) item.obj.material.emissive = new THREE.Color(0x442200);
+            } else {
+                item.obj.children.forEach(child => {
+                    if (child.material) child.material.emissive = new THREE.Color(0x000000);
+                });
+                if (item.obj.material) item.obj.material.emissive = new THREE.Color(0x000000);
+            }
         }
-        addBorderSegment(new THREE.Vector3(0,0,0), new THREE.Vector3(6,0,0), 0.25);
-        addBorderSegment(new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,7.416), 0.25);
-        addBorderSegment(new THREE.Vector3(6,0,0), new THREE.Vector3(3,0,7.416), 0.25);
         
-        // ========== 7. COTAS Y MEDIDAS VISUALES 3D (para albañil) ==========
-        function addMeasureLine(p1, p2, text, color = 0xffaa77, offsetY = 0.1) {
-            const pts = [new THREE.Vector3(p1.x, p1.y + offsetY, p1.z), new THREE.Vector3(p2.x, p2.y + offsetY, p2.z)];
-            const geom = new THREE.BufferGeometry().setFromPoints(pts);
-            const material = new THREE.LineBasicMaterial({ color: color });
-            const line = new THREE.Line(geom, material);
-            scene.add(line);
-            const mid = new THREE.Vector3((p1.x+p2.x)/2, (p1.y+p2.y)/2 + offsetY + 0.12, (p1.z+p2.z)/2);
-            const label = makeLabel(text, '#ffcc88', mid, '0.65rem', 0.6);
-            scene.add(label);
+        window.addEventListener('click', (event) => {
+            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, camera);
+            const clickableObjects = [];
+            movableItems.forEach(item => {
+                if (item.obj) clickableObjects.push(item.obj);
+                if (item.label) clickableObjects.push(item.label);
+            });
+            const intersects = raycaster.intersectObjects(clickableObjects, true);
+            if (intersects.length > 0) {
+                let found = null;
+                for (let obj of intersects) {
+                    let current = obj.object;
+                    while (current) {
+                        if (current.userData && current.userData.itemRef) {
+                            found = current.userData.itemRef;
+                            break;
+                        }
+                        current = current.parent;
+                    }
+                    if (found) break;
+                }
+                if (found && found !== selectedItem) {
+                    if (selectedItem) highlightItem(selectedItem, false);
+                    selectedItem = found;
+                    highlightItem(selectedItem, true);
+                    updateUIFromSelected();
+                }
+            } else {
+                if (selectedItem) highlightItem(selectedItem, false);
+                selectedItem = null;
+                document.getElementById('selectedName').innerText = 'Ninguno seleccionado';
+                document.getElementById('posX').value = '';
+                document.getElementById('posY').value = '';
+                document.getElementById('posZ').value = '';
+                document.getElementById('rotY').value = '';
+            }
+        });
+        
+        function updateUIFromSelected() {
+            if (!selectedItem) return;
+            document.getElementById('selectedName').innerHTML = `✅ ${selectedItem.name}`;
+            const pos = selectedItem.getPos();
+            document.getElementById('posX').value = pos.x.toFixed(3);
+            document.getElementById('posY').value = pos.y.toFixed(3);
+            document.getElementById('posZ').value = pos.z.toFixed(3);
+            document.getElementById('rotY').value = selectedItem.getRotY().toFixed(1);
         }
-        // Base
-        addMeasureLine(new THREE.Vector3(0, 0, 0), new THREE.Vector3(6, 0, 0), 'BASE: 6.00 m', 0xffaa77);
-        // Lados
-        addMeasureLine(new THREE.Vector3(0, 0, 0), new THREE.Vector3(3, 0, 7.416), 'LADO: 8.00 m', 0xffaa77);
-        addMeasureLine(new THREE.Vector3(6, 0, 0), new THREE.Vector3(3, 0, 7.416), 'LADO: 8.00 m', 0xffaa77);
-        // Altura
-        addMeasureLine(new THREE.Vector3(3, 0, 0), new THREE.Vector3(3, 0, 7.416), 'h = 7.416 m', 0xffaa66);
-        // Medidas lavadero individual
-        const primerLav = lavaderosPos[0];
-        addMeasureLine(new THREE.Vector3(primerLav.x, 0.85, primerLav.z), new THREE.Vector3(primerLav.x + lavW, 0.85, primerLav.z), '0.70m', 0x88dd88);
-        addMeasureLine(new THREE.Vector3(primerLav.x, 0.85, primerLav.z), new THREE.Vector3(primerLav.x, 0.85, primerLav.z + lavD), '0.55m', 0x88dd88);
-        // Medidas caseta
-        addMeasureLine(new THREE.Vector3(2, 0, 0), new THREE.Vector3(4, 0, 0), '2.00 m', 0xdd9966);
-        addMeasureLine(new THREE.Vector3(2, 0, 0), new THREE.Vector3(2, 0, 1.5), '1.50 m', 0xdd9966);
         
-        // ========== 8. DETALLES CONSTRUCTIVOS ADICIONALES ==========
-        // Tubería simbólica hacia lavaderos
-        const tuberiaMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 0.5 });
-        const tuberiaGeom = new THREE.CylinderGeometry(0.06, 0.06, 1.2, 6);
-        const tuberia = new THREE.Mesh(tuberiaGeom, tuberiaMat);
-        tuberia.position.set(1.5, 0.35, 0.2);
-        tuberia.castShadow = true;
-        scene.add(tuberia);
-        // Caja de registro
-        const registroGeom = new THREE.BoxGeometry(0.5, 0.25, 0.5);
-        const registroMat = new THREE.MeshStandardMaterial({ color: 0x8b6942 });
-        const registro = new THREE.Mesh(registroGeom, registroMat);
-        registro.position.set(4.6, 0.125, 0.6);
-        registro.castShadow = true;
-        scene.add(registro);
-        const regLabel = makeLabel('📦 Registro hidrosanitario', '#ccaa88', new THREE.Vector3(4.6, 0.55, 0.6), '0.6rem');
-        scene.add(regLabel);
+        // Aplicar cambios manualmente
+        document.getElementById('applyBtn').addEventListener('click', () => {
+            if (!selectedItem) return;
+            const x = parseFloat(document.getElementById('posX').value);
+            const y = parseFloat(document.getElementById('posY').value);
+            const z = parseFloat(document.getElementById('posZ').value);
+            const rot = parseFloat(document.getElementById('rotY').value);
+            if (!isNaN(x) && !isNaN(y) && !isNaN(z)) selectedItem.setPosition(x, y, z);
+            if (!isNaN(rot)) selectedItem.setRotation(rot);
+            updateUIFromSelected();
+        });
         
-        // Nivel de referencia (cota 0.00)
-        const nivelRefGeom = new THREE.BoxGeometry(0.25, 0.05, 0.25);
-        const nivelMat = new THREE.MeshStandardMaterial({ color: 0xffaa55 });
-        const nivelRef = new THREE.Mesh(nivelRefGeom, nivelMat);
-        nivelRef.position.set(0.4, 0, 0.4);
-        scene.add(nivelRef);
-        const nivelLabel = makeLabel('Nivel ±0.00', '#ffdd99', new THREE.Vector3(0.4, 0.25, 0.4), '0.6rem');
-        scene.add(nivelLabel);
+        document.getElementById('resetPosBtn').addEventListener('click', () => {
+            movableItems.forEach(item => item.reset());
+            if (selectedItem) updateUIFromSelected();
+        });
         
-        // Cubo de escala 1m
-        const escalaGeom = new THREE.BoxGeometry(1, 0.05, 1);
-        const escalaMat = new THREE.MeshStandardMaterial({ color: 0xffaa77, emissive: 0x331a00 });
-        const escalaCube = new THREE.Mesh(escalaGeom, escalaMat);
-        escalaCube.position.set(5, 0.025, 1.8);
-        scene.add(escalaCube);
-        const escalaLabel = makeLabel('1 METRO (referencia)', '#ffcc99', new THREE.Vector3(5.5, 0.25, 1.8), '0.6rem');
-        scene.add(escalaLabel);
+        // Llenar selector de elementos
+        const selectEl = document.getElementById('elementSelect');
+        movableItems.forEach((item, idx) => {
+            const option = document.createElement('option');
+            option.value = idx;
+            option.textContent = item.name;
+            selectEl.appendChild(option);
+        });
+        selectEl.addEventListener('change', (e) => {
+            const idx = parseInt(e.target.value);
+            if (!isNaN(idx) && movableItems[idx]) {
+                if (selectedItem) highlightItem(selectedItem, false);
+                selectedItem = movableItems[idx];
+                highlightItem(selectedItem, true);
+                updateUIFromSelected();
+            }
+        });
         
-        // Muro contenedor lateral izquierdo simbólico (para entender el borde de lavaderos)
-        const muroLavGeom = new THREE.BoxGeometry(1.6, 0.4, 0.1);
-        const muroLavMat = new THREE.MeshStandardMaterial({ color: 0xccaa88, transparent: true, opacity: 0.6 });
-        const muroLav = new THREE.Mesh(muroLavGeom, muroLavMat);
-        muroLav.position.set(0.8, 0.45, -0.08);
-        muroLav.castShadow = true;
-        scene.add(muroLav);
-        
-        // ========== 9. EJES AUXILIARES (transparentes para orientación) ==========
-        const axesHelper = new THREE.AxesHelper(5);
-        axesHelper.material.transparent = true;
-        axesHelper.material.opacity = 0.2;
-        scene.add(axesHelper);
-        
-        // ========== 10. ANIMACIÓN Y RENDER ==========
+        // --- ANIMACIÓN Y RENDER ---
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
@@ -424,22 +501,15 @@
         }
         animate();
         
-        window.addEventListener('resize', onWindowResize);
-        function onWindowResize() {
+        window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
             labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        }
+        });
         
-        // Información en consola para el constructor
-        console.log('===== PLANO 3D CORREGIDO - DATOS PARA ALBAÑILERÍA =====');
-        console.log('✓ Terreno: Triángulo isósceles con vértices (0,0), (6,0), (3,7.416) en coordenadas (X,Z)');
-        console.log('✓ Caseta de agua: posicionada en X=2..4, Z=0..1.5');
-        console.log('✓ Lavaderos (2): X=0.35 y X=1.15; Z=0.25, dimensiones 0.70x0.55x0.80m');
-        console.log('✓ Entrada: centrada en vértice superior, ancho 1.00m en Z=7.416');
-        console.log('✓ Pasillo central libre sobre eje X=3, desde Z=0.9 hasta Z=5.5');
-        console.log('✓ Todas las geometrías están alineadas al sistema de referencia.');
+        // Mostrar ayuda inicial
+        console.log('Editor 3D cargado - Haz clic en cualquier elemento (caseta, lavadero, entrada) para moverlo.');
     </script>
 </body>
 </html>
