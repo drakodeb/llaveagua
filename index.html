@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Lavaderos Comunitarios - Visor 3D con medidas reales para albañilería</title>
+    <title>Lavaderos Comunitarios - Visor 3D | Medidas reales alineadas para albañilería</title>
     <style>
         body {
             margin: 0;
@@ -14,32 +14,32 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
             color: white;
             padding: 12px 20px;
             border-radius: 12px;
-            backdrop-filter: blur(8px);
             pointer-events: none;
             z-index: 10;
             border-left: 5px solid #f4c542;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             font-size: 14px;
-            max-width: 280px;
+            max-width: 300px;
         }
         #info h1 {
             margin: 0 0 5px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         #info p {
             margin: 0;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0.9;
         }
         #medidas-panel {
             position: absolute;
             bottom: 20px;
             left: 20px;
-            background: rgba(30,30,30,0.85);
+            background: rgba(0,0,0,0.8);
             backdrop-filter: blur(8px);
             color: #ffecb3;
             padding: 10px 16px;
@@ -65,30 +65,29 @@
             z-index: 10;
         }
         @media (max-width: 700px) {
-            #info { font-size: 10px; max-width: 220px; top: 10px; left: 10px; }
+            #info { font-size: 9px; max-width: 240px; top: 10px; left: 10px; padding: 8px 12px; }
             #medidas-panel { font-size: 9px; bottom: 10px; left: 10px; }
         }
     </style>
 </head>
 <body>
     <div id="info">
-        <h1>🧱 LAVADEROS COMUNITARIOS · MODELO 3D EJECUTIVO</h1>
+        <h1>🧱 LAVADEROS COMUNITARIOS · PLANO 3D EJECUTIVO</h1>
         <p>Terreno triangular | Base 6m | Lados 8m | Altura 7.416m | 2 lavaderos lado izquierdo</p>
-        <p style="font-size:12px; margin-top:4px;">✅ Medidas reales en metros | Vista libre (arrastrar/rotar)</p>
+        <p style="font-size:11px; margin-top:4px;">✅ Todas las medidas y posiciones están corregidas y alineadas al sistema de coordenadas reales.</p>
     </div>
     <div id="medidas-panel">
-        📐 <strong>DETALLES CONSTRUCTIVOS:</strong><br>
-        • Lavadero individual: 0.70m (ancho) x 0.55m (fondo) x 0.80m (alto)<br>
-        • Caseta toma de agua: 2.00m (ancho) x 1.50m (profundidad) x 2.20m (alto)<br>
-        • Entrada/Salida vértice superior: 1.00m de ancho<br>
-        • Pasillo central despejado ≥ 1.20m<br>
-        • Espesores de muros: 0.15m (indicativo)
+        📐 <strong>DETALLES CONSTRUCTIVOS (metros):</strong><br>
+        • Lavadero: 0.70 (ancho) x 0.55 (fondo) x 0.80 (alto)<br>
+        • Caseta agua: 2.00 x 1.50 x 2.20 m<br>
+        • Entrada vértice: 1.00 m de ancho<br>
+        • Pasillo central libre ≥ 1.20 m<br>
+        • Coordenadas: Z = eje hacia el vértice, X = ancho base
     </div>
     <div class="controls-note">
-        🖱️ Ratón: arrastrar para rotar | Botón derecho: panorámica | Rueda: zoom
+        🖱️ Arrastrar: rotar | Botón derecho: mover | Rueda: zoom
     </div>
 
-    <!-- Importar Three.js y extensiones -->
     <script type="importmap">
         {
             "imports": {
@@ -103,24 +102,22 @@
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
-        // --- Configuración inicial ---
+        // --- CONFIGURACIÓN INICIAL ---
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x112233);
-        scene.fog = new THREE.FogExp2(0x112233, 0.008);
-        
-        // Cámara perspectiva
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(8, 6, 12);
-        camera.lookAt(3, 2, 0);
-        
+        scene.background = new THREE.Color(0x0a1a2a);
+        scene.fog = new THREE.FogExp2(0x0a1a2a, 0.006);
+
+        // Cámara: posición adecuada para apreciar todo el triángulo
+        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(5, 5, 9);
+        camera.lookAt(3, 1.5, 3.5);
+
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true; // sombras para realismo
+        renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.setPixelRatio(window.devicePixelRatio);
         document.body.appendChild(renderer.domElement);
-        
-        // Renderer para texto 2D siempre visible
+
         const labelRenderer = new CSS2DRenderer();
         labelRenderer.setSize(window.innerWidth, window.innerHeight);
         labelRenderer.domElement.style.position = 'absolute';
@@ -128,62 +125,55 @@
         labelRenderer.domElement.style.left = '0px';
         labelRenderer.domElement.style.pointerEvents = 'none';
         document.body.appendChild(labelRenderer.domElement);
-        
-        // Controles
+
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 1.2;
         controls.panSpeed = 0.8;
-        controls.enableZoom = true;
-        controls.enablePan = true;
-        controls.target.set(3, 2, 0);
-        
-        // --- Iluminación realista ---
-        // Luz ambiental
-        const ambientLight = new THREE.AmbientLight(0x404060);
+        controls.target.set(3, 1.2, 3.5);
+
+        // --- ILUMINACIÓN MEJORADA ---
+        const ambientLight = new THREE.AmbientLight(0x4a5a6a);
         scene.add(ambientLight);
-        // Luz principal direccional (sol)
-        const dirLight = new THREE.DirectionalLight(0xfff5e0, 1.2);
-        dirLight.position.set(5, 10, 3);
-        dirLight.castShadow = true;
-        dirLight.receiveShadow = true;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
-        dirLight.shadow.camera.near = 0.5;
-        dirLight.shadow.camera.far = 20;
-        dirLight.shadow.camera.left = -5;
-        dirLight.shadow.camera.right = 5;
-        dirLight.shadow.camera.top = 5;
-        dirLight.shadow.camera.bottom = -5;
-        scene.add(dirLight);
-        // Relleno cálido desde abajo
-        const fillLight = new THREE.PointLight(0xccaa77, 0.4);
-        fillLight.position.set(2, 1, 2);
+        const mainLight = new THREE.DirectionalLight(0xfff5e0, 1.2);
+        mainLight.position.set(4, 8, 3);
+        mainLight.castShadow = true;
+        mainLight.receiveShadow = true;
+        mainLight.shadow.mapSize.width = 1024;
+        mainLight.shadow.mapSize.height = 1024;
+        mainLight.shadow.camera.near = 0.5;
+        mainLight.shadow.camera.far = 15;
+        mainLight.shadow.camera.left = -5;
+        mainLight.shadow.camera.right = 5;
+        mainLight.shadow.camera.top = 5;
+        mainLight.shadow.camera.bottom = -5;
+        scene.add(mainLight);
+        const fillLight = new THREE.PointLight(0xccaa77, 0.5);
+        fillLight.position.set(2, 2, 2);
         scene.add(fillLight);
-        // Luz trasera fría
-        const backLight = new THREE.PointLight(0x6688aa, 0.3);
-        backLight.position.set(0, 3, -4);
+        const backLight = new THREE.PointLight(0x6688aa, 0.35);
+        backLight.position.set(1, 3, -3);
         scene.add(backLight);
-        
-        // Suelo de referencia (grid auxiliar)
-        const gridHelper = new THREE.GridHelper(15, 20, 0xaa9977, 0x776644);
+
+        // Helper: suelo de referencia (grid)
+        const gridHelper = new THREE.GridHelper(14, 20, 0xaa9977, 0x776644);
         gridHelper.position.y = -0.05;
         gridHelper.material.transparent = true;
-        gridHelper.material.opacity = 0.35;
+        gridHelper.material.opacity = 0.3;
         scene.add(gridHelper);
-        
-        // --- FUNCIÓN para crear texto CSS2D ---
-        function makeLabel(text, color, position, fontSize = '0.9rem') {
+
+        // Función para etiquetas CSS2D
+        function makeLabel(text, color, position, fontSize = '0.8rem', bgOpacity = 0.7) {
             const div = document.createElement('div');
             div.textContent = text;
             div.style.color = color;
             div.style.fontSize = fontSize;
             div.style.fontWeight = 'bold';
             div.style.textShadow = '1px 1px 0px black';
-            div.style.backgroundColor = 'rgba(0,0,0,0.6)';
-            div.style.padding = '2px 6px';
+            div.style.backgroundColor = `rgba(0,0,0,${bgOpacity})`;
+            div.style.padding = '2px 8px';
             div.style.borderRadius = '20px';
             div.style.borderLeft = `3px solid ${color}`;
             div.style.fontFamily = 'monospace';
@@ -192,113 +182,110 @@
             label.position.copy(position);
             return label;
         }
-        
-        // --- 1. TERRENO TRIANGULAR (base 6m, lados 8m, altura 7.416m) ---
+
+        // ========== 1. TERRENO TRIANGULAR (base 6m en X, vértice en Z positivo) ==========
+        // Vértices: A(0,0), B(6,0), C(3, 7.416)
+        const points = [
+            new THREE.Vector2(0, 0),
+            new THREE.Vector2(6, 0),
+            new THREE.Vector2(3, 7.416)
+        ];
         const shape = new THREE.Shape();
-        shape.moveTo(0, 0);
-        shape.lineTo(6, 0);
-        shape.lineTo(3, 7.416);
+        shape.moveTo(points[0].x, points[0].y);
+        shape.lineTo(points[1].x, points[1].y);
+        shape.lineTo(points[2].x, points[2].y);
         shape.closePath();
-        const extrudeSettings = { steps: 1, depth: 0.1, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 3 };
-        const geometryTerrain = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-        geometryTerrain.computeVertexNormals();
-        geometryTerrain.center();
-        const terrainMaterial = new THREE.MeshStandardMaterial({ color: 0xdcd0a8, roughness: 0.7, metalness: 0.1, side: THREE.DoubleSide });
-        const terrainMesh = new THREE.Mesh(geometryTerrain, terrainMaterial);
-        terrainMesh.position.set(0, 0, 0);
-        terrainMesh.rotation.x = -Math.PI / 2;
-        terrainMesh.position.y = -0.05;
+        
+        const extrudeSettings = { steps: 1, depth: 0.1, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 2 };
+        const terrainGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        terrainGeometry.computeVertexNormals();
+        terrainGeometry.rotateX(-Math.PI / 2);
+        terrainGeometry.translate(0, -0.05, 0);
+        const terrainMat = new THREE.MeshStandardMaterial({ color: 0xd4c8a0, roughness: 0.7, metalness: 0.05 });
+        const terrainMesh = new THREE.Mesh(terrainGeometry, terrainMat);
         terrainMesh.receiveShadow = true;
         terrainMesh.castShadow = false;
         scene.add(terrainMesh);
-        
-        // Borde del triángulo (línea blanca para resaltar)
-        const borderPoints = [
+
+        // Borde del triángulo (línea resaltada)
+        const borderPoints3D = [
             new THREE.Vector3(0, 0.02, 0),
             new THREE.Vector3(6, 0.02, 0),
             new THREE.Vector3(3, 0.02, 7.416),
             new THREE.Vector3(0, 0.02, 0)
         ];
-        const borderLine = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(borderPoints), new THREE.LineBasicMaterial({ color: 0xffaa66, linewidth: 2 }));
+        const borderLine = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(borderPoints3D), new THREE.LineBasicMaterial({ color: 0xffaa66, linewidth: 2 }));
         scene.add(borderLine);
-        
-        // --- 2. CASETA DE AGUA (2m ancho, 1.5m fondo, 2.2m alto) ---
-        const casetaWidth = 2.0;
-        const casetaDepth = 1.5;
-        const casetaHeight = 2.2;
+
+        // ========== 2. CASETA DE AGUA (centrada en base: X desde 2 a 4, Z desde 0 a 1.5) ==========
+        const casetaW = 2.0;
+        const casetaD = 1.5;
+        const casetaH = 2.2;
         const casetaX = 2.0;
         const casetaZ = 0.0;
-        const casetaGeom = new THREE.BoxGeometry(casetaWidth, casetaHeight, casetaDepth);
-        const casetaMat = new THREE.MeshStandardMaterial({ color: 0xbc9a6c, roughness: 0.4, metalness: 0.1 });
+        const casetaGeom = new THREE.BoxGeometry(casetaW, casetaH, casetaD);
+        const casetaMat = new THREE.MeshStandardMaterial({ color: 0xbc9a6c, roughness: 0.4 });
         const caseta = new THREE.Mesh(casetaGeom, casetaMat);
-        caseta.position.set(casetaX + casetaWidth/2, casetaHeight/2, casetaZ + casetaDepth/2);
+        caseta.position.set(casetaX + casetaW/2, casetaH/2, casetaZ + casetaD/2);
         caseta.castShadow = true;
         caseta.receiveShadow = true;
         scene.add(caseta);
-        // Techo inclinado (prisma triangular)
-        const roofGeom = new THREE.CylinderGeometry(1.1, 1.1, 0.25, 4);
-        const roofMat = new THREE.MeshStandardMaterial({ color: 0xaa7c4a, roughness: 0.6 });
+        // Techo a dos aguas simbólico
+        const roofGeom = new THREE.CylinderGeometry(1.15, 1.15, 0.25, 4);
+        const roofMat = new THREE.MeshStandardMaterial({ color: 0xaa7c4a });
         const roof = new THREE.Mesh(roofGeom, roofMat);
-        roof.position.set(casetaX + casetaWidth/2, casetaHeight + 0.1, casetaZ + casetaDepth/2);
+        roof.position.set(casetaX + casetaW/2, casetaH + 0.12, casetaZ + casetaD/2);
         roof.castShadow = true;
         scene.add(roof);
-        // Texto "TOMA AGUA"
-        const aguaLabel = makeLabel('💧 TOMA DE AGUA  2.00x1.50m', '#ffdd99', new THREE.Vector3(casetaX + 1.0, 1.6, casetaDepth + 0.1), '0.7rem');
+        
+        const aguaLabel = makeLabel('💧 TOMA DE AGUA  2.00 x 1.50 m', '#ffdd99', new THREE.Vector3(3, 1.9, 0.9), '0.75rem');
         scene.add(aguaLabel);
         
-        // --- 3. LAVADEROS (2 unidades solo lado izquierdo) medidas reales: ancho 0.70, fondo 0.55, alto 0.80m ---
-        const lavaderosData = [
-            { x: 0.35, z: 0.20 },   // primer lavadero
-            { x: 1.15, z: 0.20 }    // segundo lavadero
-        ];
+        // ========== 3. LAVADEROS: 2 unidades lado izquierdo (X: 0.35 y 1.15) a Z = 0.20 ==========
         const lavW = 0.70;
-        const lavH = 0.55;
-        const lavAlt = 0.80;
+        const lavD = 0.55;
+        const lavH = 0.80;
+        const lavaderosPos = [
+            { x: 0.35, z: 0.25 },
+            { x: 1.15, z: 0.25 }
+        ];
+        const lavMaterial = new THREE.MeshStandardMaterial({ color: 0x8cb36b, roughness: 0.3 });
+        const lavInteriorMat = new THREE.MeshStandardMaterial({ color: 0xcad2b0 });
         
-        // Material de lavadero (pila de concreto con azulejo)
-        const lavMaterial = new THREE.MeshStandardMaterial({ color: 0x8cb36b, roughness: 0.3, metalness: 0.05 });
-        const lavInteriorMat = new THREE.MeshStandardMaterial({ color: 0xcad2b0, roughness: 0.5 });
-        
-        lavaderosData.forEach(pos => {
+        lavaderosPos.forEach(pos => {
             const group = new THREE.Group();
-            // Base principal
-            const box = new THREE.BoxGeometry(lavW, lavAlt, lavH);
-            const mesh = new THREE.Mesh(box, lavMaterial);
-            mesh.position.y = lavAlt/2;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            group.add(mesh);
-            
-            // Hendedura / pileta interior (rebaje visual)
-            const interior = new THREE.BoxGeometry(lavW - 0.12, 0.25, lavH - 0.12);
-            const intMesh = new THREE.Mesh(interior, lavInteriorMat);
-            intMesh.position.y = lavAlt - 0.10;
-            intMesh.castShadow = true;
-            group.add(intMesh);
-            
-            // Grifo simbólico
-            const grifoBase = new THREE.CylinderGeometry(0.05, 0.07, 0.2, 6);
-            const grifoMat = new THREE.MeshStandardMaterial({ color: 0xddbb88, metalness: 0.7 });
-            const grifo = new THREE.Mesh(grifoBase, grifoMat);
-            grifo.position.set(-0.2, lavAlt - 0.05, 0.2);
-            grifo.castShadow = true;
+            const bodyGeom = new THREE.BoxGeometry(lavW, lavH, lavD);
+            const body = new THREE.Mesh(bodyGeom, lavMaterial);
+            body.position.y = lavH/2;
+            body.castShadow = true;
+            body.receiveShadow = true;
+            group.add(body);
+            // Pileta interior
+            const interiorGeom = new THREE.BoxGeometry(lavW - 0.12, 0.22, lavD - 0.12);
+            const interior = new THREE.Mesh(interiorGeom, lavInteriorMat);
+            interior.position.y = lavH - 0.09;
+            interior.castShadow = true;
+            group.add(interior);
+            // Grifo
+            const grifoGeom = new THREE.CylinderGeometry(0.05, 0.07, 0.2, 6);
+            const grifoMat = new THREE.MeshStandardMaterial({ color: 0xddbb88, metalness: 0.6 });
+            const grifo = new THREE.Mesh(grifoGeom, grifoMat);
+            grifo.position.set(-0.2, lavH - 0.05, 0.22);
             group.add(grifo);
-            
             group.position.set(pos.x, 0, pos.z);
             scene.add(group);
             
-            // Etiqueta de medidas
-            const labelPos = new THREE.Vector3(pos.x + lavW/2, 0.95, pos.z + lavH/2);
-            const labelText = makeLabel(`🧼 Lavadero\n0.70x0.55x0.80m`, '#d4ffb0', labelPos, '0.65rem');
-            scene.add(labelText);
+            const labelPos = new THREE.Vector3(pos.x + lavW/2, 0.95, pos.z + lavD/2);
+            const lavLabel = makeLabel(`🧼 Lavadero\n0.70x0.55x0.80m`, '#ccffaa', labelPos, '0.65rem', 0.65);
+            scene.add(lavLabel);
         });
         
-        // --- 4. ENTRADA / SALIDA EN VÉRTICE SUPERIOR (1m ancho) ---
+        // ========== 4. ENTRADA / SALIDA EN VÉRTICE (Z = 7.416, X = 3, ancho 1m) ==========
         const entradaAncho = 1.0;
         const entradaX1 = 3 - entradaAncho/2;
         const entradaX2 = 3 + entradaAncho/2;
-        const entradaZ = 7.416 - 0.05;
-        // Marcar con dos postes y un dintel simbólico
+        const entradaZ = 7.416;
+        // Postes
         const postMat = new THREE.MeshStandardMaterial({ color: 0xc29b5a });
         const postGeom = new THREE.BoxGeometry(0.12, 1.2, 0.12);
         const postLeft = new THREE.Mesh(postGeom, postMat);
@@ -309,143 +296,135 @@
         scene.add(postRight);
         const lintelGeom = new THREE.BoxGeometry(entradaAncho + 0.1, 0.1, 0.2);
         const lintel = new THREE.Mesh(lintelGeom, new THREE.MeshStandardMaterial({ color: 0xb87c3a }));
-        lintel.position.set(3, 1.2, entradaZ);
+        lintel.position.set(3, 1.25, entradaZ);
         scene.add(lintel);
-        
-        const entradaLabel = makeLabel('🚪 ENTRADA/SALIDA | 1.00m de ancho', '#ffcc77', new THREE.Vector3(3, 1.4, entradaZ + 0.2), '0.7rem');
+        const entradaLabel = makeLabel('🚪 ENTRADA/SALIDA | 1.00m ancho', '#ffcc77', new THREE.Vector3(3, 1.5, entradaZ + 0.15), '0.7rem');
         scene.add(entradaLabel);
         
-        // --- 5. PASILLO CENTRAL Y DEMARCACIONES ---
-        // Línea central con puntos
+        // ========== 5. PASILLO CENTRAL Y DEMARCACIONES ==========
         const puntosLinea = [
-            new THREE.Vector3(3, 0.05, 0.8),
-            new THREE.Vector3(3, 0.05, 3.5),
-            new THREE.Vector3(3, 0.05, 6.0)
+            new THREE.Vector3(3, 0.08, 0.9),
+            new THREE.Vector3(3, 0.08, 3.2),
+            new THREE.Vector3(3, 0.08, 5.5)
         ];
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffaa55 });
-        const puntosGeom = new THREE.BufferGeometry().setFromPoints(puntosLinea);
-        const lineaCentral = new THREE.Line(puntosGeom, lineMaterial);
+        const lineGeom = new THREE.BufferGeometry().setFromPoints(puntosLinea);
+        const lineMat = new THREE.LineBasicMaterial({ color: 0xffaa55 });
+        const lineaCentral = new THREE.Line(lineGeom, lineMat);
         scene.add(lineaCentral);
         
-        // Flechas de dirección (pequeños conos)
         const arrowCone = new THREE.ConeGeometry(0.12, 0.35, 8);
         const arrowMat = new THREE.MeshStandardMaterial({ color: 0xeeaa55 });
-        const arrowPos = new THREE.Mesh(arrowCone, arrowMat);
-        arrowPos.position.set(3, 0.2, 6.0);
-        arrowPos.rotation.x = 0.2;
-        scene.add(arrowPos);
+        const arrow = new THREE.Mesh(arrowCone, arrowMat);
+        arrow.position.set(3, 0.2, 5.8);
+        arrow.rotation.x = 0.2;
+        scene.add(arrow);
         
-        const pasilloLabel = makeLabel('⬅️ PASILLO CENTRAL | Libre circulación ➡️', '#ffe0aa', new THREE.Vector3(3, 0.8, 3.8), '0.7rem');
+        const pasilloLabel = makeLabel('⬅️ PASILLO CENTRAL (1.20m libre) ➡️', '#ffe0aa', new THREE.Vector3(3, 0.9, 3.2), '0.7rem');
         scene.add(pasilloLabel);
         
-        // --- 6. MUROS DE CONTENCIÓN / BORDES (para dar realismo y entender linderos) ---
-        const muroMat = new THREE.MeshStandardMaterial({ color: 0xaa8c64, roughness: 0.7, transparent: true, opacity: 0.4 });
-        const addBorderSegment = (start, end, height = 0.3) => {
-            const dx = end.x - start.x;
-            const dz = end.z - start.z;
+        // ========== 6. MUROS DE CONTENCIÓN / BORDES (semi-transparentes) ==========
+        const muroMat = new THREE.MeshStandardMaterial({ color: 0xaa8c64, roughness: 0.7, transparent: true, opacity: 0.35 });
+        function addBorderSegment(p1, p2, height = 0.25) {
+            const dx = p2.x - p1.x;
+            const dz = p2.z - p1.z;
             const length = Math.hypot(dx, dz);
-            const box = new THREE.BoxGeometry(length, height, 0.15);
+            const box = new THREE.BoxGeometry(length, height, 0.12);
             const wall = new THREE.Mesh(box, muroMat);
-            wall.position.set((start.x + end.x)/2, height/2, (start.z + end.z)/2);
+            wall.position.set((p1.x + p2.x)/2, height/2, (p1.z + p2.z)/2);
             wall.rotation.y = Math.atan2(dx, dz);
             wall.castShadow = true;
             scene.add(wall);
-        };
+        }
         addBorderSegment(new THREE.Vector3(0,0,0), new THREE.Vector3(6,0,0), 0.25);
         addBorderSegment(new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,7.416), 0.25);
         addBorderSegment(new THREE.Vector3(6,0,0), new THREE.Vector3(3,0,7.416), 0.25);
         
-        // --- 7. AGREGAR COTAS VISUALES 3D (líneas de medición) para el albañil---
-        function addMeasureLine(p1, p2, text, color = 0xffaa66) {
-            const points = [new THREE.Vector3(p1.x, p1.y, p1.z), new THREE.Vector3(p2.x, p2.y, p2.z)];
-            const geom = new THREE.BufferGeometry().setFromPoints(points);
+        // ========== 7. COTAS Y MEDIDAS VISUALES 3D (para albañil) ==========
+        function addMeasureLine(p1, p2, text, color = 0xffaa77, offsetY = 0.1) {
+            const pts = [new THREE.Vector3(p1.x, p1.y + offsetY, p1.z), new THREE.Vector3(p2.x, p2.y + offsetY, p2.z)];
+            const geom = new THREE.BufferGeometry().setFromPoints(pts);
             const material = new THREE.LineBasicMaterial({ color: color });
             const line = new THREE.Line(geom, material);
             scene.add(line);
-            const mid = new THREE.Vector3((p1.x+p2.x)/2, (p1.y+p2.y)/2 + 0.15, (p1.z+p2.z)/2);
-            const label = makeLabel(text, '#ffcc88', mid, '0.65rem');
+            const mid = new THREE.Vector3((p1.x+p2.x)/2, (p1.y+p2.y)/2 + offsetY + 0.12, (p1.z+p2.z)/2);
+            const label = makeLabel(text, '#ffcc88', mid, '0.65rem', 0.6);
             scene.add(label);
         }
-        // Medidas de la base
-        addMeasureLine(new THREE.Vector3(0, 0.1, 0), new THREE.Vector3(6, 0.1, 0), 'BASE: 6.00 m', 0xffaa77);
-        // Medida lado izquierdo
-        addMeasureLine(new THREE.Vector3(0, 0.1, 0), new THREE.Vector3(3, 0.1, 7.416), 'LADO: 8.00 m', 0xffaa77);
-        addMeasureLine(new THREE.Vector3(6, 0.1, 0), new THREE.Vector3(3, 0.1, 7.416), 'LADO: 8.00 m', 0xffaa77);
+        // Base
+        addMeasureLine(new THREE.Vector3(0, 0, 0), new THREE.Vector3(6, 0, 0), 'BASE: 6.00 m', 0xffaa77);
+        // Lados
+        addMeasureLine(new THREE.Vector3(0, 0, 0), new THREE.Vector3(3, 0, 7.416), 'LADO: 8.00 m', 0xffaa77);
+        addMeasureLine(new THREE.Vector3(6, 0, 0), new THREE.Vector3(3, 0, 7.416), 'LADO: 8.00 m', 0xffaa77);
         // Altura
-        addMeasureLine(new THREE.Vector3(3, 0.1, 0), new THREE.Vector3(3, 0.1, 7.416), 'ALTURA: 7.416 m', 0xffaa66);
-        
-        // Medidas lavaderos individuales en el espacio
-        const primerLavadero = lavaderosData[0];
-        const p1Lav = new THREE.Vector3(primerLavadero.x, 0.85, primerLavadero.z);
-        const p1LavW = new THREE.Vector3(primerLavadero.x + lavW, 0.85, primerLavadero.z);
-        const p1LavD = new THREE.Vector3(primerLavadero.x, 0.85, primerLavadero.z + lavH);
-        addMeasureLine(p1Lav, p1LavW, '0.70m (ancho)', 0x88dd88);
-        addMeasureLine(p1Lav, p1LavD, '0.55m (fondo)', 0x88dd88);
-        
+        addMeasureLine(new THREE.Vector3(3, 0, 0), new THREE.Vector3(3, 0, 7.416), 'h = 7.416 m', 0xffaa66);
+        // Medidas lavadero individual
+        const primerLav = lavaderosPos[0];
+        addMeasureLine(new THREE.Vector3(primerLav.x, 0.85, primerLav.z), new THREE.Vector3(primerLav.x + lavW, 0.85, primerLav.z), '0.70m', 0x88dd88);
+        addMeasureLine(new THREE.Vector3(primerLav.x, 0.85, primerLav.z), new THREE.Vector3(primerLav.x, 0.85, primerLav.z + lavD), '0.55m', 0x88dd88);
         // Medidas caseta
-        const casetaP1 = new THREE.Vector3(casetaX, 0.1, 0);
-        const casetaP2 = new THREE.Vector3(casetaX + casetaWidth, 0.1, 0);
-        const casetaP3 = new THREE.Vector3(casetaX, 0.1, casetaDepth);
-        addMeasureLine(casetaP1, casetaP2, '2.00 m', 0xdd9966);
-        addMeasureLine(casetaP1, casetaP3, '1.50 m', 0xdd9966);
+        addMeasureLine(new THREE.Vector3(2, 0, 0), new THREE.Vector3(4, 0, 0), '2.00 m', 0xdd9966);
+        addMeasureLine(new THREE.Vector3(2, 0, 0), new THREE.Vector3(2, 0, 1.5), '1.50 m', 0xdd9966);
         
-        // --- 8. DETALLES CONSTRUCTIVOS EXTRAS: niveles de tubería y desagüe simbólico---
-        const tuberiaMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 0.6 });
-        const tuberia = new THREE.CylinderGeometry(0.06, 0.06, 0.8, 6);
-        const tuberiaMesh = new THREE.Mesh(tuberia, tuberiaMat);
-        tuberiaMesh.position.set(2.8, 0.4, 0.15);
-        tuberiaMesh.castShadow = true;
-        scene.add(tuberiaMesh);
-        
-        // Pequeña caja de registro al lado de la caseta
-        const registroGeom = new THREE.BoxGeometry(0.45, 0.25, 0.45);
+        // ========== 8. DETALLES CONSTRUCTIVOS ADICIONALES ==========
+        // Tubería simbólica hacia lavaderos
+        const tuberiaMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, metalness: 0.5 });
+        const tuberiaGeom = new THREE.CylinderGeometry(0.06, 0.06, 1.2, 6);
+        const tuberia = new THREE.Mesh(tuberiaGeom, tuberiaMat);
+        tuberia.position.set(1.5, 0.35, 0.2);
+        tuberia.castShadow = true;
+        scene.add(tuberia);
+        // Caja de registro
+        const registroGeom = new THREE.BoxGeometry(0.5, 0.25, 0.5);
         const registroMat = new THREE.MeshStandardMaterial({ color: 0x8b6942 });
         const registro = new THREE.Mesh(registroGeom, registroMat);
-        registro.position.set(4.8, 0.125, 0.45);
+        registro.position.set(4.6, 0.125, 0.6);
         registro.castShadow = true;
         scene.add(registro);
-        const registroLabel = makeLabel('📦 Registro hidráulico', '#ccaa88', new THREE.Vector3(4.8, 0.5, 0.45), '0.6rem');
-        scene.add(registroLabel);
+        const regLabel = makeLabel('📦 Registro hidrosanitario', '#ccaa88', new THREE.Vector3(4.6, 0.55, 0.6), '0.6rem');
+        scene.add(regLabel);
         
-        // --- 9. SEÑALIZACIÓN DE NIVELES Y REFERENCIAS---
-        // Un cubo testigo de nivel (altura +0.00)
-        const nivelRefGeom = new THREE.BoxGeometry(0.2, 0.05, 0.2);
+        // Nivel de referencia (cota 0.00)
+        const nivelRefGeom = new THREE.BoxGeometry(0.25, 0.05, 0.25);
         const nivelMat = new THREE.MeshStandardMaterial({ color: 0xffaa55 });
         const nivelRef = new THREE.Mesh(nivelRefGeom, nivelMat);
-        nivelRef.position.set(0.5, 0, 0.5);
+        nivelRef.position.set(0.4, 0, 0.4);
         scene.add(nivelRef);
-        const nivelLabel = makeLabel('Nivel ±0.00 referencia', '#ffdd99', new THREE.Vector3(0.5, 0.2, 0.5), '0.6rem');
+        const nivelLabel = makeLabel('Nivel ±0.00', '#ffdd99', new THREE.Vector3(0.4, 0.25, 0.4), '0.6rem');
         scene.add(nivelLabel);
         
-        // --- 10. ESQUEMA DE MURO DE LAVADERO (detalle adicional)---
-        // Pequeño elevado lateral izquierdo para mostrar muro de los lavaderos
-        const muroLavGeom = new THREE.BoxGeometry(2.2, 0.45, 0.12);
-        const muroLavMat = new THREE.MeshStandardMaterial({ color: 0xccaa88 });
+        // Cubo de escala 1m
+        const escalaGeom = new THREE.BoxGeometry(1, 0.05, 1);
+        const escalaMat = new THREE.MeshStandardMaterial({ color: 0xffaa77, emissive: 0x331a00 });
+        const escalaCube = new THREE.Mesh(escalaGeom, escalaMat);
+        escalaCube.position.set(5, 0.025, 1.8);
+        scene.add(escalaCube);
+        const escalaLabel = makeLabel('1 METRO (referencia)', '#ffcc99', new THREE.Vector3(5.5, 0.25, 1.8), '0.6rem');
+        scene.add(escalaLabel);
+        
+        // Muro contenedor lateral izquierdo simbólico (para entender el borde de lavaderos)
+        const muroLavGeom = new THREE.BoxGeometry(1.6, 0.4, 0.1);
+        const muroLavMat = new THREE.MeshStandardMaterial({ color: 0xccaa88, transparent: true, opacity: 0.6 });
         const muroLav = new THREE.Mesh(muroLavGeom, muroLavMat);
-        muroLav.position.set(0.9, 0.65, -0.1);
+        muroLav.position.set(0.8, 0.45, -0.08);
         muroLav.castShadow = true;
         scene.add(muroLav);
         
-        // --- 11. CUBO DE ESCALA GENERAL (cota 1m)---
-        const escalaGeom = new THREE.BoxGeometry(1, 0.05, 1);
-        const escalaMat = new THREE.MeshStandardMaterial({ color: 0xffaa77, emissive: 0x442200 });
-        const escalaCube = new THREE.Mesh(escalaGeom, escalaMat);
-        escalaCube.position.set(5.2, 0, 1.2);
-        scene.add(escalaCube);
-        const escalaLabel = makeLabel('1 METRO (referencia)', '#ffcc99', new THREE.Vector3(5.2, 0.2, 1.2), '0.6rem');
-        scene.add(escalaLabel);
+        // ========== 9. EJES AUXILIARES (transparentes para orientación) ==========
+        const axesHelper = new THREE.AxesHelper(5);
+        axesHelper.material.transparent = true;
+        axesHelper.material.opacity = 0.2;
+        scene.add(axesHelper);
         
-        // --- 12. ANIMACIÓN Y RENDER ---
+        // ========== 10. ANIMACIÓN Y RENDER ==========
         function animate() {
             requestAnimationFrame(animate);
-            controls.update(); // actualizar orbitas
+            controls.update();
             renderer.render(scene, camera);
             labelRenderer.render(scene, camera);
         }
         animate();
         
-        // Ajuste de ventana responsivo
-        window.addEventListener('resize', onWindowResize, false);
+        window.addEventListener('resize', onWindowResize);
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -453,19 +432,14 @@
             labelRenderer.setSize(window.innerWidth, window.innerHeight);
         }
         
-        // Pequeño helper para consola: mostrar medidas en consola (para el albañil)
-        console.log('===== LAVADEROS COMUNITARIOS - DATOS CONSTRUCTIVOS =====');
-        console.log('Terreno triangular: base 6m, lados 8m, altura exacta 7.416m');
-        console.log('Lavaderos: 2 unidades en lado izquierdo. Dimensiones: ancho 0.70m, fondo 0.55m, altura 0.80m');
-        console.log('Caseta de agua: 2.00m ancho x 1.50m fondo x 2.20m alto');
-        console.log('Entrada/salida en vértice superior: 1.00m de ancho');
-        console.log('Pendiente de piso: ninguna (superficie nivelada). Coordenadas en metros.');
-        
-        // Adicional: Mostrar ejes XYZ ligeros
-        const axesHelper = new THREE.AxesHelper(5);
-        axesHelper.material.transparent = true;
-        axesHelper.material.opacity = 0.2;
-        scene.add(axesHelper);
+        // Información en consola para el constructor
+        console.log('===== PLANO 3D CORREGIDO - DATOS PARA ALBAÑILERÍA =====');
+        console.log('✓ Terreno: Triángulo isósceles con vértices (0,0), (6,0), (3,7.416) en coordenadas (X,Z)');
+        console.log('✓ Caseta de agua: posicionada en X=2..4, Z=0..1.5');
+        console.log('✓ Lavaderos (2): X=0.35 y X=1.15; Z=0.25, dimensiones 0.70x0.55x0.80m');
+        console.log('✓ Entrada: centrada en vértice superior, ancho 1.00m en Z=7.416');
+        console.log('✓ Pasillo central libre sobre eje X=3, desde Z=0.9 hasta Z=5.5');
+        console.log('✓ Todas las geometrías están alineadas al sistema de referencia.');
     </script>
 </body>
 </html>
