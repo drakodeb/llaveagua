@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lavaderos Comunitarios | Plano interactivo con medidas exactas</title>
+    <title>Lavaderos Comunitarios | Regaderas exactas al perímetro triangular + pasillo central</title>
     <style>
         * {
             box-sizing: border-box;
-            user-select: none; /* evita selección molesta en botones, pero no afecta texto */
         }
-
         body {
-            background: #dad7cd;
+            background: #cbd5c0;
             font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             margin: 0;
             padding: 20px;
@@ -20,101 +18,77 @@
             align-items: center;
             min-height: 100vh;
         }
-
         .card {
-            max-width: 1200px;
+            max-width: 1300px;
             width: 100%;
             background: #fefaf0;
             border-radius: 2rem;
             box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
-
         .header {
             background: #2c4c2f;
             color: white;
             padding: 1rem 2rem;
             text-align: center;
         }
-
         .header h1 {
             font-weight: 600;
-            font-size: 1.7rem;
+            font-size: 1.6rem;
             margin: 0;
-            letter-spacing: -0.3px;
         }
-
         .header p {
             margin: 0.4rem 0 0;
             opacity: 0.9;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
-
         .medidas-fijas {
             background: #e9e3d3;
-            padding: 8px 20px;
+            padding: 6px 20px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1.2rem;
-            font-size: 0.8rem;
+            gap: 1rem;
+            font-size: 0.75rem;
             font-weight: 500;
-            color: #2b4427;
             border-bottom: 1px solid #d6ceb2;
         }
-
-        .medidas-fijas span {
-            background: #fff7e8;
-            padding: 3px 12px;
-            border-radius: 24px;
-            box-shadow: inset 0 0 0 1px #cfc6a8;
-        }
-
         .botonera {
             background: #f5efe0;
-            padding: 1rem 1.5rem;
+            padding: 0.9rem 1.2rem;
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 1rem;
             flex-wrap: wrap;
             border-bottom: 1px solid #e0d5bc;
         }
-
         .btn {
             background: #4b7a4a;
             border: none;
             font-weight: bold;
-            font-size: 1rem;
-            padding: 10px 24px;
+            font-size: 0.85rem;
+            padding: 8px 18px;
             border-radius: 60px;
             color: white;
             cursor: pointer;
             transition: 0.2s;
             font-family: inherit;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
-
         .btn:hover {
             background: #2b5e2a;
             transform: scale(1.02);
         }
-
         .btn.active {
             background: #da7a2c;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
         }
-
         .canvas-container {
-            padding: 1.8rem;
+            padding: 1.5rem;
             background: #fffcf2;
             display: flex;
             justify-content: center;
-            border-bottom: 1px solid #e5ddc8;
         }
-
         canvas {
             width: 100%;
             height: auto;
@@ -122,188 +96,270 @@
             border-radius: 1.5rem;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
             border: 1px solid #dcd0b0;
-            cursor: pointer;
         }
-
         .info-legends {
             background: #f8f3e4;
-            padding: 0.9rem 2rem;
+            padding: 0.7rem 1.5rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            gap: 0.8rem;
-            font-size: 0.75rem;
+            gap: 0.6rem;
+            font-size: 0.7rem;
         }
-
         .legend {
             display: flex;
-            gap: 1.2rem;
+            gap: 1rem;
             flex-wrap: wrap;
         }
-
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             background: white;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 28px;
         }
-
         .color-cuadro {
-            width: 22px;
-            height: 18px;
+            width: 20px;
+            height: 16px;
             border-radius: 4px;
         }
-
         .nota {
             background: #e2d8c0;
-            padding: 5px 14px;
+            padding: 4px 12px;
             border-radius: 32px;
             font-weight: 500;
-            font-size: 0.7rem;
         }
-
         footer {
             font-size: 0.7rem;
             text-align: center;
-            padding: 0.7rem;
+            padding: 0.6rem;
             background: #eae3cf;
-            color: #4f513a;
         }
     </style>
 </head>
 <body>
 <div class="card">
     <div class="header">
-        <h1>🧺 LAVADEROS COMUNITARIOS · DISTRIBUCIÓN TÉCNICA</h1>
-        <p>▲ Terreno triangular isósceles | Base 6.00 m | Lados 8.00 m | Altura 7.416 m</p>
+        <h1>🧺 LAVADEROS COMUNITARIOS · REGADERAS EXACTAS AL PERÍMETRO TRIANGULAR</h1>
+        <p>▲ Terreno isósceles | Base 6.00 m | Lados 8.00 m | Altura 7.416 m | Entrada/Salida en vértice superior (1m)</p>
     </div>
     <div class="medidas-fijas">
-        <span>🏠 Caseta toma de agua: 2.00m (ancho) × 1.50m (fondo)</span>
-        <span>🧼 Lavadero estándar: 0.70m × 0.55m</span>
-        <span>🚿 Regadera pública cuadrada: 0.90m × 0.90m</span>
+        <span>🏠 Caseta: 2.00m × 1.50m</span>
+        <span>🧼 Lavadero: 0.70m × 0.55m</span>
+        <span>🚿 Regadera adaptada al perímetro (forma poligonal)</span>
+        <span>🚪 Entrada/Salida: 1.00m (vértice)</span>
+        <span>🔄 Pasillo central despejado</span>
     </div>
     <div class="botonera">
-        <button id="btnLayout2x1" class="btn">🫧 2 LAVADEROS + 1 REGADERA 🚿</button>
-        <button id="btnLayout4x2" class="btn active">🧼🧼 4 LAVADEROS + 2 REGADERAS 🚿🚿</button>
+        <button id="btnLayout2x1" class="btn">🫧 2 lavaderos + 1 regadera central</button>
+        <button id="btnLayout4x2" class="btn">🧼🧼 4 lavaderos + 2 regaderas simétricas</button>
+        <button id="btnPerimeterReg" class="btn active">🔺 REGADERAS EXACTAS AL PERÍMETRO + PASILLO CENTRAL 🚿🚿</button>
     </div>
     <div class="canvas-container">
-        <canvas id="planoCanvas" width="1000" height="750" style="max-width:1000px; width:100%; height:auto; aspect-ratio:1000/750"></canvas>
+        <canvas id="planoCanvas" width="1100" height="800" style="max-width:1100px; width:100%; height:auto; aspect-ratio:1100/800"></canvas>
     </div>
     <div class="info-legends">
         <div class="legend">
-            <div class="legend-item"><div class="color-cuadro" style="background:#bc9a6c;"></div> Caseta / Agua (2x1.5m)</div>
+            <div class="legend-item"><div class="color-cuadro" style="background:#bc9a6c;"></div> Caseta agua</div>
             <div class="legend-item"><div class="color-cuadro" style="background:#5f8b4c;"></div> Lavadero 0.70x0.55m</div>
-            <div class="legend-item"><div class="color-cuadro" style="background:#3b82b6;"></div> Regadera cuadrada 0.90x0.90m</div>
-            <div class="legend-item"><div class="color-cuadro" style="background:#e9dbc1; border:1px solid #b48b44;"></div> Terreno triangular</div>
+            <div class="legend-item"><div class="color-cuadro" style="background:#3b82b6;"></div> Regadera perimetral (recortada al borde)</div>
+            <div class="legend-item"><div class="color-cuadro" style="background:#f4c542;"></div> 🚪 Entrada/Salida (1m)</div>
+            <div class="legend-item"><div class="color-cuadro" style="background:#f0ebd0;"></div> Pasillo central libre</div>
         </div>
-        <div class="nota">📐 Medidas exactas en metros | Selecciona distribución arriba</div>
+        <div class="nota">✅ Las regaderas se recortan exactamente contra los lados inclinados del triángulo respetando el borde.</div>
     </div>
-    <footer>✔ Regaderas en formato cuadrado estándar para espacio público · ubicaciones óptimas dentro del triángulo</footer>
+    <footer>🚶 Entrada en el vértice superior (ancho 1.0 m). Regaderas con geometría adaptada al perímetro para máximo aprovechamiento.</footer>
 </div>
 
 <script>
     (function() {
-        // ---------- DATOS FIJOS DEL TERRENO (metros) ----------
+        // ---------- PARÁMETROS DEL TERRENO ----------
         const BASE = 6.0;
         const LADO = 8.0;
-        const ALTURA = Math.sqrt(LADO * LADO - (BASE/2)*(BASE/2)); // √55 ≈ 7.416198
+        const ALTURA = Math.sqrt(LADO * LADO - (BASE/2)*(BASE/2)); // 7.416198
+        const VERTEX_X = BASE/2;   // 3.0
+        const VERTEX_Y = ALTURA;
         
-        // Vértices
+        // Vértices triángulo
         const A = { x: 0, y: 0 };
         const B = { x: BASE, y: 0 };
-        const C = { x: BASE/2, y: ALTURA };
+        const C = { x: VERTEX_X, y: VERTEX_Y };
         
-        // Caseta (centrada en la base, ancho 2.0 m, profundidad 1.5 m)
+        // Caseta
         const CASETA_ANCHO = 2.0;
         const CASETA_PROF = 1.5;
         const CASETA_X1 = (BASE - CASETA_ANCHO) / 2;   // 2.0
         const CASETA_X2 = CASETA_X1 + CASETA_ANCHO;     // 4.0
         const CASETA_Y_BASE = 0;
-        const CASETA_Y_TOP = CASETA_PROF;               // 1.5
+        const CASETA_Y_TOP = CASETA_PROF;
         
-        // DIMENSIONES ESTÁNDAR
-        const LAV_W = 0.70;    // ancho lavadero
-        const LAV_H = 0.55;    // fondo lavadero
-        const REG_W = 0.90;    // regadera cuadrada (lado)
-        const REG_H = 0.90;
+        // Dimensiones elementos estándar
+        const LAV_W = 0.70;
+        const LAV_H = 0.55;
         
-        // ---------- LAYOUTS ----------
-        // Opción 1: 2 lavaderos + 1 regadera cuadrada
-        // Distribución: un lavadero izquierdo, un lavadero derecho (simétricos) y una regadera central más arriba
+        // --- ENTRADA / SALIDA en la punta del triángulo (1m ancho) ---
+        const ENTRADA_ANCHO = 1.0;
+        const ENTRADA_X1 = VERTEX_X - ENTRADA_ANCHO/2;
+        const ENTRADA_X2 = VERTEX_X + ENTRADA_ANCHO/2;
+        const ENTRADA_Y = VERTEX_Y - 0.08;  // leve desplazamiento para visualización
+        
+        // ----- REGADERAS PERIMETRALES (tercera opción) con recorte exacto -----
+        // Definimos dos polígonos que representan las regaderas izquierda y derecha,
+        // pegadas a los lados AC y BC respectivamente. Se recortan para que su contorno exterior coincida con el lado del triángulo.
+        // Estrategia: crear polígonos que sigan el borde del triángulo desde una distancia "d" del vértice inferior/hasta cierta altura.
+        // Para simplificar con precisión, definimos un "espesor" de la regadera perpendicular al borde de 0.90m, pero como queremos que sea visualmente cuadrada pero adaptada,
+        // dibujaremos un polígono que tenga 4 vértices: dos sobre el borde del triángulo y dos hacia el interior, manteniendo un ancho de 0.90 m en dirección normal.
+        // Para hacerlo exacto y legible, construimos las regaderas como cuadriláteros que tienen un lado pegado al perímetro.
+        // Izquierda: lado AC. Derecha: lado BC.
+        // Definimos altura de inicio de la regadera desde la base (y=1.2 m) hasta y≈3.8 m, manteniendo profundidad constante de 0.90m hacia el interior.
+        
+        // función auxiliar: punto sobre el segmento AC (izquierdo) a una altura Y dada
+        function pointOnLeftEdge(y) {
+            // recta desde A(0,0) hasta C(3, ALTURA): pendiente m = ALTURA / (BASE/2) = ALTURA/3
+            const m = ALTURA / (BASE/2);
+            const x = y / m;
+            return { x: x, y: y };
+        }
+        
+        // punto sobre el segmento BC (derecho)
+        function pointOnRightEdge(y) {
+            // desde B(6,0) hasta C(3, ALTURA): paramétrica: x = BASE - (y / m)   misma pendiente absoluta
+            const m = ALTURA / (BASE/2);
+            const x = BASE - (y / m);
+            return { x: x, y: y };
+        }
+        
+        // Definir la regadera izquierda: desde y_start hasta y_end, con ancho perpendicular 0.90m hacia adentro.
+        // Para simular una forma rectangular adaptada, creamos un polígono con 4 puntos: dos puntos sobre el borde (inferior y superior)
+        // y sus correspondientes puntos desplazados hacia el interior siguiendo la normal.
+        function buildLeftShower(y_start, y_end, width_perp = 0.90) {
+            // punto inferior sobre borde
+            const p1 = pointOnLeftEdge(y_start);
+            const p2 = pointOnLeftEdge(y_end);
+            // vector dirección del borde (p2-p1)
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const len = Math.hypot(dx, dy);
+            if (len === 0) return [];
+            // vector unitario tangente
+            const tx = dx / len;
+            const ty = dy / len;
+            // normal hacia el interior (apuntando hacia la derecha del vector dirección, interior del triángulo)
+            // El interior del triángulo está hacia la derecha cuando recorremos desde A hacia C (pendiente positiva, interior está a la derecha)
+            // para lado izquierdo: normal interior = (ty, -tx) ? validamos: en punto medio, interior está hacia +x. Simplemente rotamos.
+            let nx = ty;
+            let ny = -tx;
+            // comprobación rápida: en (1,2) el interior debe apuntar hacia +x, si nx >0 sirve.
+            const testX = p1.x + nx*0.2;
+            if (testX < p1.x) { nx = -nx; ny = -ny; }  // ajuste para que apunte al interior
+            const offX = nx * width_perp;
+            const offY = ny * width_perp;
+            const p1_in = { x: p1.x + offX, y: p1.y + offY };
+            const p2_in = { x: p2.x + offX, y: p2.y + offY };
+            return [p1, p2, p2_in, p1_in];
+        }
+        
+        function buildRightShower(y_start, y_end, width_perp = 0.90) {
+            const p1 = pointOnRightEdge(y_start);
+            const p2 = pointOnRightEdge(y_end);
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const len = Math.hypot(dx, dy);
+            if (len === 0) return [];
+            const tx = dx / len;
+            const ty = dy / len;
+            // Lado derecho: el interior está hacia la izquierda (al recorrer desde B(6,0) a C(3,ALTURA), la normal interior tiene componente -x)
+            let nx = -ty;
+            let ny = tx;
+            const testX = p1.x + nx*0.2;
+            if (testX > p1.x) { nx = -nx; ny = -ny; }
+            const offX = nx * width_perp;
+            const offY = ny * width_perp;
+            const p1_in = { x: p1.x + offX, y: p1.y + offY };
+            const p2_in = { x: p2.x + offX, y: p2.y + offY };
+            return [p1, p2, p2_in, p1_in];
+        }
+        
+        // Rango vertical para regaderas: desde y = 1.5 m (por encima de la caseta) hasta y = 5.8 m (para no interferir con entrada)
+        const SHOWER_Y_START = 1.7;
+        const SHOWER_Y_END = 5.5;
+        const SHOWER_WIDTH = 0.90;   // ancho perpendicular al borde
+        
+        let leftShowerPolygon = buildLeftShower(SHOWER_Y_START, SHOWER_Y_END, SHOWER_WIDTH);
+        let rightShowerPolygon = buildRightShower(SHOWER_Y_START, SHOWER_Y_END, SHOWER_WIDTH);
+        
+        // Los lavaderos para la opción perimetral (4 unidades) igual que en layout clásico pero adaptados
+        const lavaderosPerimeter = [
+            { x: 0.32, y: 0.30, w: LAV_W, h: LAV_H },
+            { x: 1.12, y: 0.30, w: LAV_W, h: LAV_H },
+            { x: BASE - 0.32 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H },
+            { x: BASE - 1.12 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H }
+        ];
+        
+        // otros layouts (sencillos sin perimetrales)
         const layout2x1 = {
             lavaderos: [
-                { x: 0.50, y: 0.30, w: LAV_W, h: LAV_H },   // izquierdo
-                { x: BASE - 0.50 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H }  // derecho
+                { x: 0.55, y: 0.30, w: LAV_W, h: LAV_H },
+                { x: BASE - 0.55 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H }
             ],
-            regaderas: [
-                { x: BASE/2 - REG_W/2, y: 2.40, w: REG_W, h: REG_H }  // regadera centrada, cuadrada
+            regaderasRect: [
+                { x: BASE/2 - 0.45, y: 2.60, w: 0.90, h: 0.90 }
             ]
         };
         
-        // Opción 2: 4 lavaderos (dos a cada lado) + 2 regaderas cuadradas (izquierda y derecha)
-        // Lavaderos izquierdos: x=0.35 y x=1.15 ; derechos: x=4.15 y x=4.95 (aprovechando espacio 2m a cada lado)
         const layout4x2 = {
             lavaderos: [
-                { x: 0.32, y: 0.30, w: LAV_W, h: LAV_H },    // izq 1
-                { x: 1.12, y: 0.30, w: LAV_W, h: LAV_H },    // izq 2
-                { x: BASE - 0.32 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H },   // der 1 (4.98-0.7=4.28)
-                { x: BASE - 1.12 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H }    // der 2 (4.18 aprox)
+                { x: 0.32, y: 0.30, w: LAV_W, h: LAV_H },
+                { x: 1.12, y: 0.30, w: LAV_W, h: LAV_H },
+                { x: BASE - 0.32 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H },
+                { x: BASE - 1.12 - LAV_W, y: 0.30, w: LAV_W, h: LAV_H }
             ],
-            regaderas: [
-                { x: 1.70, y: 2.80, w: REG_W, h: REG_H },    // regadera izquierda cuadrada
-                { x: BASE - 1.70 - REG_W, y: 2.80, w: REG_W, h: REG_H }  // regadera derecha
+            regaderasRect: [
+                { x: 1.65, y: 2.70, w: 0.90, h: 0.90 },
+                { x: BASE - 1.65 - 0.90, y: 2.70, w: 0.90, h: 0.90 }
             ]
         };
         
-        // Correcciones para evitar salirse del triángulo? Los valores están probados dentro del área útil y por debajo de la altura del triángulo.
-        // Aseguramos que todas las coordenadas Y + altura no superen ALTURA - margen (todas y+h < ~7.0)
-        
-        // Estado actual
-        let currentLayout = "4x2";   // '4x2' o '2x1'
+        let currentLayout = "perimeter"; // '2x1', '4x2', 'perimeter'
         
         // Canvas
         const canvas = document.getElementById('planoCanvas');
         const ctx = canvas.getContext('2d');
-        const CANVAS_W = 1000;
-        const CANVAS_H = 750;
+        const CANVAS_W = 1100;
+        const CANVAS_H = 800;
         canvas.width = CANVAS_W;
         canvas.height = CANVAS_H;
         
-        // Márgenes mundo: X: -0.5 a 6.5 , Y: -0.5 a ALTURA+0.8
-        const WORLD_X_MIN = -0.6;
-        const WORLD_X_MAX = BASE + 0.6;
-        const WORLD_Y_MIN = -0.6;
-        const WORLD_Y_MAX = ALTURA + 0.9;
+        const WORLD_X_MIN = -0.8;
+        const WORLD_X_MAX = BASE + 0.8;
+        const WORLD_Y_MIN = -0.8;
+        const WORLD_Y_MAX = ALTURA + 1.0;
         
         function worldToCanvas(x, y) {
             const tx = (x - WORLD_X_MIN) / (WORLD_X_MAX - WORLD_X_MIN);
             const ty = (y - WORLD_Y_MIN) / (WORLD_Y_MAX - WORLD_Y_MIN);
-            const canvasX = tx * CANVAS_W;
-            const canvasY = CANVAS_H - (ty * CANVAS_H);
-            return { x: canvasX, y: canvasY };
+            return { x: tx * CANVAS_W, y: CANVAS_H - (ty * CANVAS_H) };
         }
         
-        // Dibujar retícula ligera de referencia
         function drawGrid() {
             ctx.save();
-            ctx.globalAlpha = 0.2;
+            ctx.globalAlpha = 0.15;
             ctx.beginPath();
-            ctx.lineWidth = 0.7;
-            ctx.strokeStyle = "#b6a87c";
+            ctx.strokeStyle = "#998f6b";
+            ctx.lineWidth = 0.6;
             for (let x = 0; x <= BASE+0.5; x+=1.0) {
-                const p1 = worldToCanvas(x, WORLD_Y_MIN);
-                const p2 = worldToCanvas(x, WORLD_Y_MAX);
+                let p1 = worldToCanvas(x, WORLD_Y_MIN);
+                let p2 = worldToCanvas(x, WORLD_Y_MAX);
                 ctx.beginPath();
                 ctx.moveTo(p1.x, p1.y);
                 ctx.lineTo(p2.x, p2.y);
                 ctx.stroke();
             }
-            for (let y = 0; y <= ALTURA+1.0; y+=1.0) {
-                const p1 = worldToCanvas(WORLD_X_MIN, y);
-                const p2 = worldToCanvas(WORLD_X_MAX, y);
+            for (let y = 0; y <= ALTURA+1; y+=1.0) {
+                let p1 = worldToCanvas(WORLD_X_MIN, y);
+                let p2 = worldToCanvas(WORLD_X_MAX, y);
                 ctx.beginPath();
                 ctx.moveTo(p1.x, p1.y);
                 ctx.lineTo(p2.x, p2.y);
@@ -313,8 +369,7 @@
             ctx.restore();
         }
         
-        // Triángulo + cotas exactas
-        function drawTriangleWithMeasures() {
+        function drawTriangle() {
             const pA = worldToCanvas(A.x, A.y);
             const pB = worldToCanvas(B.x, B.y);
             const pC = worldToCanvas(C.x, C.y);
@@ -327,49 +382,36 @@
             ctx.fill();
             ctx.strokeStyle = "#7d5f38";
             ctx.lineWidth = 2.8;
-            ctx.setLineDash([]);
             ctx.stroke();
-            
-            // Base destacada
             ctx.beginPath();
             ctx.moveTo(pA.x, pA.y);
             ctx.lineTo(pB.x, pB.y);
             ctx.strokeStyle = "#b4813c";
             ctx.lineWidth = 3.2;
             ctx.stroke();
-            
-            // Medidas
-            ctx.font = "bold 15px 'Segoe UI'";
+            // medidas
+            ctx.font = "bold 14px 'Segoe UI'";
             ctx.fillStyle = "#34623c";
             const midBase = worldToCanvas(BASE/2, -0.22);
-            ctx.fillText("6.00 m", midBase.x - 28, midBase.y - 4);
-            
+            ctx.fillText("6.00 m", midBase.x - 24, midBase.y - 4);
             const midLeft = worldToCanvas((A.x+C.x)/2, (A.y+C.y)/2 + 0.2);
-            ctx.fillText("8.00 m", midLeft.x - 34, midLeft.y - 8);
+            ctx.fillText("8.00 m", midLeft.x - 32, midLeft.y - 8);
             const midRight = worldToCanvas((B.x+C.x)/2, (B.y+C.y)/2 + 0.2);
-            ctx.fillText("8.00 m", midRight.x + 6, midRight.y - 8);
-            
-            // Altura
+            ctx.fillText("8.00 m", midRight.x + 5, midRight.y - 8);
+            // altura punteada
             ctx.beginPath();
-            ctx.setLineDash([5, 5]);
+            ctx.setLineDash([5,5]);
             ctx.moveTo(worldToCanvas(BASE/2, 0).x, worldToCanvas(BASE/2, 0).y);
             ctx.lineTo(worldToCanvas(BASE/2, ALTURA).x, worldToCanvas(BASE/2, ALTURA).y);
             ctx.strokeStyle = "#bc8f4b";
-            ctx.lineWidth = 1.6;
             ctx.stroke();
             ctx.setLineDash([]);
             const midHeight = worldToCanvas(BASE/2, ALTURA/2);
             ctx.fillStyle = "#745b30";
-            ctx.font = "italic 12px 'Segoe UI'";
+            ctx.font = "italic 11px";
             ctx.fillText(`h = ${ALTURA.toFixed(3)} m`, midHeight.x + 8, midHeight.y - 4);
-            // Vértice
-            ctx.fillStyle = "#b57834";
-            ctx.beginPath();
-            ctx.arc(pC.x, pC.y, 5, 0, 2*Math.PI);
-            ctx.fill();
         }
         
-        // Caseta con dimensiones visibles
         function drawCasita() {
             const p1 = worldToCanvas(CASETA_X1, CASETA_Y_BASE);
             const p2 = worldToCanvas(CASETA_X2, CASETA_Y_BASE);
@@ -384,188 +426,229 @@
             ctx.fillStyle = "#bc9a6c";
             ctx.fill();
             ctx.strokeStyle = "#7a582e";
-            ctx.lineWidth = 1.8;
             ctx.stroke();
-            
-            const centerX = (CASETA_X1 + CASETA_X2)/2;
-            const centerY = CASETA_Y_TOP/2;
-            const pCenter = worldToCanvas(centerX, centerY);
-            ctx.font = "bold 15px 'Segoe UI'";
+            const center = worldToCanvas((CASETA_X1+CASETA_X2)/2, CASETA_Y_TOP/2);
+            ctx.font = "bold 14px";
             ctx.fillStyle = "#fef0cf";
-            ctx.fillText("💧", pCenter.x-10, pCenter.y+5);
-            ctx.font = "bold 10px monospace";
+            ctx.fillText("💧", center.x-10, center.y+5);
+            ctx.font = "bold 9px monospace";
             ctx.fillStyle = "#2d2418";
-            ctx.fillText("TOMA AGUA", pCenter.x-32, pCenter.y-8);
-            // dimensiones caseta
-            ctx.font = "9px 'Segoe UI'";
-            ctx.fillStyle = "#2c2b1f";
-            const pAncho = worldToCanvas(CASETA_X1+1.0, -0.18);
+            ctx.fillText("AGUA", center.x-18, center.y-8);
+            ctx.font = "8px sans-serif";
+            const pAncho = worldToCanvas(CASETA_X1+1.0, -0.2);
             ctx.fillText("2.00 m", pAncho.x-12, pAncho.y-2);
-            const pProf = worldToCanvas(CASETA_X2+0.12, CASETA_Y_TOP/2);
-            ctx.fillText("1.50 m", pProf.x+2, pProf.y);
         }
         
-        // Dibujar lavaderos con medidas
-        function drawLavaderos(lavList) {
-            lavList.forEach(l => {
-                const topLeft = worldToCanvas(l.x, l.y);
-                const botRight = worldToCanvas(l.x + l.w, l.y + l.h);
-                const wPx = botRight.x - topLeft.x;
-                const hPx = botRight.y - topLeft.y;
+        function drawLavaderos(list) {
+            list.forEach(l => {
+                const tl = worldToCanvas(l.x, l.y);
+                const br = worldToCanvas(l.x + l.w, l.y + l.h);
+                const w = br.x - tl.x;
+                const h = br.y - tl.y;
                 ctx.fillStyle = "#5f8b4c";
-                ctx.fillRect(topLeft.x, topLeft.y, wPx, hPx);
+                ctx.fillRect(tl.x, tl.y, w, h);
                 ctx.fillStyle = "#eef5e5";
-                ctx.fillRect(topLeft.x+3, topLeft.y+3, wPx-6, hPx-6);
+                ctx.fillRect(tl.x+2, tl.y+2, w-4, h-4);
                 ctx.fillStyle = "#2f5e2a";
-                ctx.font = "bold 19px 'Segoe UI'";
-                ctx.fillText("🧼", topLeft.x + wPx/2 - 11, topLeft.y + hPx/2 + 6);
-                ctx.strokeStyle = "#3a6133";
-                ctx.lineWidth = 1.3;
-                ctx.strokeRect(topLeft.x, topLeft.y, wPx, hPx);
-                // medidas
-                ctx.font = "8px monospace";
+                ctx.font = "bold 17px 'Segoe UI'";
+                ctx.fillText("🧼", tl.x + w/2 - 10, tl.y + h/2 + 5);
+                ctx.strokeRect(tl.x, tl.y, w, h);
+                ctx.font = "7px monospace";
                 ctx.fillStyle = "#1e3c1a";
-                ctx.fillText(`${l.w.toFixed(2)}m`, topLeft.x + wPx - 24, topLeft.y + hPx - 5);
-                ctx.fillText(`${l.h.toFixed(2)}m`, topLeft.x + 3, topLeft.y + hPx - 5);
+                ctx.fillText(`${l.w.toFixed(2)}m`, tl.x + w - 22, tl.y + h - 4);
+                ctx.fillText(`${l.h.toFixed(2)}m`, tl.x + 3, tl.y + h - 4);
             });
         }
         
-        // Dibujar regaderas cuadradas (formato cuadrado estándar para públicas)
-        function drawRegaderas(regList) {
-            regList.forEach(r => {
-                const topLeft = worldToCanvas(r.x, r.y);
-                const botRight = worldToCanvas(r.x + r.w, r.y + r.h);
-                const wPx = botRight.x - topLeft.x;
-                const hPx = botRight.y - topLeft.y;
+        function drawRegaderasRect(list) {
+            list.forEach(r => {
+                const tl = worldToCanvas(r.x, r.y);
+                const br = worldToCanvas(r.x + r.w, r.y + r.h);
+                const w = br.x - tl.x;
+                const h = br.y - tl.y;
                 ctx.fillStyle = "#3b82b6";
-                ctx.fillRect(topLeft.x, topLeft.y, wPx, hPx);
+                ctx.fillRect(tl.x, tl.y, w, h);
                 ctx.fillStyle = "#cae9ff";
-                ctx.fillRect(topLeft.x+3, topLeft.y+3, wPx-6, hPx-6);
+                ctx.fillRect(tl.x+2, tl.y+2, w-4, h-4);
                 ctx.fillStyle = "#0f3a50";
-                ctx.font = `bold ${Math.min(22, wPx/2.5)}px 'Segoe UI'`;
-                ctx.fillText("🚿", topLeft.x + wPx/2 - 12, topLeft.y + hPx/2 + 7);
+                ctx.font = `bold ${Math.min(19, w/2.4)}px`;
+                ctx.fillText("🚿", tl.x + w/2 - 11, tl.y + h/2 + 6);
                 ctx.strokeStyle = "#1e6591";
-                ctx.lineWidth = 1.8;
-                ctx.strokeRect(topLeft.x, topLeft.y, wPx, hPx);
-                // Medidas del cuadro (0.90 x 0.90)
-                ctx.font = "8px monospace";
+                ctx.strokeRect(tl.x, tl.y, w, h);
+                ctx.font = "7px monospace";
                 ctx.fillStyle = "#082c3b";
-                ctx.fillText(`${r.w.toFixed(2)}m`, topLeft.x + wPx - 27, topLeft.y + hPx - 6);
-                ctx.fillText(`${r.h.toFixed(2)}m`, topLeft.x + 4, topLeft.y + hPx - 6);
-                // Etiqueta "REGADERA"
-                ctx.font = "9px 'Segoe UI'";
-                ctx.fillStyle = "#063142";
-                ctx.fillText("ducha pública", topLeft.x + wPx/2 - 32, topLeft.y - 5);
+                ctx.fillText(`${r.w.toFixed(2)}m`, tl.x + w - 26, tl.y + h - 5);
+                ctx.fillText("0.90m", tl.x + 4, tl.y + h - 5);
             });
         }
         
-        // Dibujar anotaciones de espacios libres y separaciones
+        // Dibuja regaderas perimetrales exactas (polígonos)
+        function drawPerimeterShowers() {
+            if (leftShowerPolygon.length === 4) {
+                ctx.beginPath();
+                let pts = leftShowerPolygon.map(p => worldToCanvas(p.x, p.y));
+                ctx.moveTo(pts[0].x, pts[0].y);
+                for (let i=1; i<pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+                ctx.closePath();
+                ctx.fillStyle = "#3b82b6";
+                ctx.fill();
+                ctx.fillStyle = "#cae9ff";
+                ctx.beginPath();
+                let inner = [pts[0], pts[1], pts[2], pts[3]];
+                ctx.fillStyle = "#9ac2db";
+                ctx.fill();
+                ctx.strokeStyle = "#1e6591";
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                // símbolo de ducha y anotación
+                const centerX = (pts[0].x + pts[2].x)/2;
+                const centerY = (pts[0].y + pts[2].y)/2;
+                ctx.fillStyle = "#0f3a50";
+                ctx.font = "bold 18px 'Segoe UI'";
+                ctx.fillText("🚿", centerX-10, centerY+5);
+                ctx.font = "7px monospace";
+                ctx.fillStyle = "#082c3b";
+                ctx.fillText("0.90m ancho", centerX-28, centerY-10);
+            }
+            if (rightShowerPolygon.length === 4) {
+                ctx.beginPath();
+                let pts = rightShowerPolygon.map(p => worldToCanvas(p.x, p.y));
+                ctx.moveTo(pts[0].x, pts[0].y);
+                for (let i=1; i<pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+                ctx.closePath();
+                ctx.fillStyle = "#3b82b6";
+                ctx.fill();
+                ctx.fillStyle = "#cae9ff";
+                ctx.fill();
+                ctx.strokeStyle = "#1e6591";
+                ctx.stroke();
+                const centerX = (pts[0].x + pts[2].x)/2;
+                const centerY = (pts[0].y + pts[2].y)/2;
+                ctx.fillStyle = "#0f3a50";
+                ctx.font = "bold 18px";
+                ctx.fillText("🚿", centerX-10, centerY+5);
+                ctx.font = "7px monospace";
+                ctx.fillStyle = "#082c3b";
+                ctx.fillText("0.90m ancho", centerX-28, centerY-10);
+            }
+        }
+        
+        function drawEntrada() {
+            const p1 = worldToCanvas(ENTRADA_X1, ENTRADA_Y);
+            const p2 = worldToCanvas(ENTRADA_X2, ENTRADA_Y);
+            const p3 = worldToCanvas(ENTRADA_X2, ENTRADA_Y - 0.28);
+            const p4 = worldToCanvas(ENTRADA_X1, ENTRADA_Y - 0.28);
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineTo(p3.x, p3.y);
+            ctx.lineTo(p4.x, p4.y);
+            ctx.closePath();
+            ctx.fillStyle = "#f4c542";
+            ctx.fill();
+            ctx.strokeStyle = "#b47c2e";
+            ctx.stroke();
+            const pm = worldToCanvas(VERTEX_X, ENTRADA_Y-0.12);
+            ctx.fillStyle = "#5c411c";
+            ctx.font = "bold 9px monospace";
+            ctx.fillText("🚪 ENTRADA 1m", pm.x-34, pm.y-4);
+        }
+        
+        function drawPasilloCentral() {
+            if (currentLayout === "perimeter") {
+                const centroX = BASE/2;
+                const izq = worldToCanvas(centroX-0.9, 1.4);
+                const der = worldToCanvas(centroX+0.9, 5.2);
+                ctx.fillStyle = "#f7f2e0";
+                ctx.globalAlpha = 0.35;
+                ctx.fillRect(izq.x, izq.y, der.x-izq.x, der.y-izq.y);
+                ctx.globalAlpha = 1;
+                const start = worldToCanvas(centroX, 1.9);
+                const end = worldToCanvas(centroX, 4.0);
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(end.x, end.y);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#b48b44";
+                ctx.setLineDash([8,6]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = "#b48b44";
+                ctx.beginPath();
+                ctx.moveTo(end.x, end.y);
+                ctx.lineTo(end.x-5, end.y-7);
+                ctx.lineTo(end.x+5, end.y-7);
+                ctx.fill();
+                ctx.fillStyle = "#8b6942";
+                ctx.font = "italic 10px";
+                ctx.fillText("PASILLO CENTRAL", start.x-48, start.y-8);
+            }
+        }
+        
         function drawAnnotations() {
             ctx.save();
-            ctx.setLineDash([4, 6]);
-            ctx.lineWidth = 1;
+            ctx.setLineDash([4,5]);
             ctx.strokeStyle = "#ab8b54";
-            // Espacio libre izquierdo y derecho
             const leftSpace = worldToCanvas(1.0, -0.25);
             const rightSpace = worldToCanvas(5.0, -0.25);
-            ctx.font = "9px 'Segoe UI'";
             ctx.fillStyle = "#826e48";
-            ctx.fillText("↹ 2.00 m libre", leftSpace.x - 28, leftSpace.y - 3);
-            ctx.fillText("↹ 2.00 m libre", rightSpace.x - 24, rightSpace.y - 3);
-            // Linea divisoria caseta - zona regaderas
-            const profLineStart = worldToCanvas(CASETA_X1, CASETA_Y_TOP);
-            const profLineEnd = worldToCanvas(CASETA_X2, CASETA_Y_TOP);
-            ctx.beginPath();
-            ctx.moveTo(profLineStart.x, profLineStart.y);
-            ctx.lineTo(profLineEnd.x, profLineEnd.y);
-            ctx.stroke();
-            ctx.fillStyle = "#7a623a";
-            ctx.font = "italic 8px monospace";
-            ctx.fillText("límite caseta", profLineStart.x+15, profLineStart.y-4);
+            ctx.font = "8px";
+            ctx.fillText("↹ 2.00 m libre", leftSpace.x-28, leftSpace.y-3);
+            ctx.fillText("↹ 2.00 m libre", rightSpace.x-24, rightSpace.y-3);
             ctx.setLineDash([]);
             ctx.restore();
         }
         
-        // Barra escala gráfica
         function drawScale() {
-            const pStart = worldToCanvas(0.2, -0.45);
-            const pEnd = worldToCanvas(1.2, -0.45);
+            const p1 = worldToCanvas(0.2, -0.5);
+            const p2 = worldToCanvas(1.2, -0.5);
             ctx.beginPath();
-            ctx.moveTo(pStart.x, pStart.y);
-            ctx.lineTo(pEnd.x, pEnd.y);
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
             ctx.lineWidth = 2.5;
             ctx.strokeStyle = "#6f5a36";
             ctx.stroke();
             ctx.fillStyle = "#434125";
-            ctx.font = "9px sans-serif";
-            ctx.fillText("1 metro", (pStart.x+pEnd.x)/2-12, pStart.y-5);
+            ctx.font = "8px";
+            ctx.fillText("1 metro", (p1.x+p2.x)/2-12, p1.y-5);
         }
         
-        function drawTitleAndInfo() {
-            ctx.font = "bold 14px 'Segoe UI'";
+        function drawTitle() {
+            ctx.font = "bold 13px 'Segoe UI'";
             ctx.fillStyle = "#3c3b28";
-            ctx.fillText("PLANO DE DISTRIBUCIÓN · LAVADEROS COMUNITARIOS", 35, 42);
-            ctx.font = "italic 9px monospace";
+            ctx.fillText("DISEÑO LAVADEROS · REGADERAS EXACTAS AL PERÍMETRO TRIANGULAR", 40, 45);
+            ctx.font = "italic 8px";
             ctx.fillStyle = "#6f694e";
-            ctx.fillText("Unidades en metros (m) | Regaderas cuadradas 0.90x0.90m", 35, 62);
+            ctx.fillText("Regaderas recortadas contra los lados | Aprovechamiento máximo del terreno", 40, 63);
         }
         
-        // Obtener listas según layout actual
-        function getCurrentLayout() {
-            if (currentLayout === "2x1") return layout2x1;
-            return layout4x2;
-        }
-        
-        // Renderizado principal
         function render() {
             ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
             ctx.fillStyle = "#fffcf5";
             ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
             drawGrid();
-            drawTriangleWithMeasures();
+            drawTriangle();
             drawCasita();
-            const layout = getCurrentLayout();
-            drawLavaderos(layout.lavaderos);
-            drawRegaderas(layout.regaderas);
+            if (currentLayout === "2x1") {
+                drawLavaderos(layout2x1.lavaderos);
+                drawRegaderasRect(layout2x1.regaderasRect);
+            } else if (currentLayout === "4x2") {
+                drawLavaderos(layout4x2.lavaderos);
+                drawRegaderasRect(layout4x2.regaderasRect);
+            } else {
+                drawLavaderos(lavaderosPerimeter);
+                drawPerimeterShowers();
+                drawPasilloCentral();
+            }
+            drawEntrada();
             drawAnnotations();
             drawScale();
-            drawTitleAndInfo();
-            
-            // minilegendado adicional en canvas (opcional)
-            ctx.font = "bold 9px monospace";
-            ctx.fillStyle = "#56532e";
-            ctx.fillRect(CANVAS_W-170, CANVAS_H-70, 160, 55);
-            ctx.fillStyle = "#faf2e1";
-            ctx.fillRect(CANVAS_W-168, CANVAS_H-68, 156, 51);
-            ctx.fillStyle = "#3b6738";
-            ctx.fillText("📏 Lavadero: 0.70x0.55 m", CANVAS_W-163, CANVAS_H-48);
-            ctx.fillText("🚿 Regadera cuad: 0.90x0.90 m", CANVAS_W-163, CANVAS_H-36);
-            ctx.fillText("🏠 Caseta: 2.00x1.50 m", CANVAS_W-163, CANVAS_H-24);
-        }
-        
-        // Manejadores de botones con cambio visual
-        const btn2x1 = document.getElementById('btnLayout2x1');
-        const btn4x2 = document.getElementById('btnLayout4x2');
-        
-        function setActiveLayout(layout) {
-            currentLayout = layout;
-            if (layout === "2x1") {
-                btn2x1.classList.add('active');
-                btn4x2.classList.remove('active');
-            } else {
-                btn4x2.classList.add('active');
-                btn2x1.classList.remove('active');
-            }
-            render();
-        }
-        
-        btn2x1.addEventListener('click', () => setActiveLayout("2x1"));
-        btn4x2.addEventListener('click', () => setActiveLayout("4x2"));
-        
-        // redibujar en resize
-        window.addEventListener('resize', () => render());
-        render();
-    })();
-</script>
-</body>
-</html>
+            drawTitle();
+            // mini legenda en canvas
+            ctx.fillStyle = "#f1ecdc";
+            ctx.fillRect(CANVAS_W-165, CANVAS_H-70, 155, 55);
+            ctx.fillStyle = "#4f623b";
+            ctx.font = "bold 8px monospace";
+            ctx.fillText("Opción activa:", CANVAS_W-160, CANVAS_H-52);
+            if (currentLayout === "2x1") ctx.fillText("✔ 2 lavaderos + 1 regadera", CANVAS_W-155, CANVAS_H-37);
+            else if (currentLayout === "4x2") ctx.fillText("✔ 4 lavaderos + 2 reg
